@@ -1,20 +1,17 @@
 # database testing scripts ##
 
-import pandas as pd
-from transformers.pipelines import pipeline
+
+
+
+
 from flask import Flask
 import sqlite3
-from logger import logger
 
-
-#if __name__ == '__main__':
-    # app.run()
-
-conn = sqlite3.connect('question_answer_log.db')
+conn = sqlite3.connect('test_Database.db')
 
 c = conn.cursor()
 
-#c.execute("""CREATE TABLE logger (first  text, last text , Comments text)""")
+c.execute("""CREATE TABLE logger (first  text, last text , comments text)""")
 
 #c.execute("INSERT INTO logger VALUES ('sbjksj','xsadsa','asdsd')")
 
