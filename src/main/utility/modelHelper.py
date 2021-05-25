@@ -60,8 +60,9 @@ class modelHelper:
             listOfModels = []
             for row in data:
                 print(row[0], row[1], row[2])
-                listOfModels.append(NLPModels(row[0], row[1], row[2]))
-            return json.dumps(listOfModels, default=lambda x: x.__dict__)
+                #listOfModels.append(NLPModels(row[0], row[1], row[2]))
+                listOfModels.append({'name':row[0],'tokenizer':row[1],'model':row[2]})
+            return json.dumps(listOfModels)
 
     def getRecentlyAnsweredQuestions(self,modelName,startTime,endTime):
         print('Inside modelHelper.getRecentlyAnsweredQuestions')
