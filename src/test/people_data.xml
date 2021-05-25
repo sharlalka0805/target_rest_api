@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+    <people>
+     <person>
+         <firstName>Alan</firstName>
+         <lastName>Turing</lastName>
+         <profession>Computer Scientist</profession>
+         </person>
+     <person>
+         <firstName>Stephen</firstName>
+         <lastName>Hawking</lastName>
+         <profession>Physicist</profession>
+     </person>
+    </people>
