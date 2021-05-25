@@ -34,6 +34,8 @@ class dbHelper:
         finally:
             con.close()
 
+# Create method to upload default data in NLP Models table using XML
+
     def listModels(self):
         try:
             with sql.connect("questionAnswer.db") as con:
@@ -101,22 +103,22 @@ class dbHelper:
         finally:
             con.close()
 
-    def saveRecentlyAnsweredQuestion(self,modelName, question, context,answer,createdDate):
+    def saveRecentlyAnsweredQuestion(self,questionAnswer):
         try:
-            print('Inside dbHelper.getRecentlyAnsweredQuestionsList for model = ', modelName, ' question = ',
-                  question, ' context = ', context ,' answer = ',answer,'createdDate = ',createdDate)
+            print('Inside dbHelper.getRecentlyAnsweredQuestionsList for model = ', questionAnswer.modelName, ' question = ',
+                  questionAnswer.question, ' context = ', questionAnswer.context ,' answer = ',questionAnswer.answer,'timeStamp = ',questionAnswer.timestamp)
             with sql.connect("questionAnswer.db") as con:
 
                 cur = con.cursor()
 
                 cur.execute(
                     "INSERT INTO Question_Answer VALUES (?,?,?,?,?)",
-                                                {'modelName': modelName
-                                                 ,'question':question
-                                                ,'context': context
-                                                , 'answer': answer
-                                                 ,'createdDate':createdDate })
-                print('Inside dbHelper.getRecentlyAnsweredQuestionsList ' , 'Data saved successfully')
+                                                {'modelName': questionAnswer.modelName
+                                                 ,'question':questionAnswer.question
+                                                ,'context': questionAnswer.context
+                                                , 'answer': questionAnswer.answer
+                                                 ,'timestamp':questionAnswer.timestamp })
+                print('Inside dbHelper.getRecentlyAnsweredQuestionsList ','Data saved successfully')
                 return "Data saved successfully"
         except:
             con.rollback()
@@ -127,3 +129,18 @@ class dbHelper:
     # Create method to store all the logs
     def saveDBLog(self):
         return "Log saved succesfully"
+
+    # Method to get mode details
+    def getModelDetails(self,modelName):
+        print('Inside dbHelper.getModelDetails for modelName = ' , modelName)
+        try:
+            with sql.connect("questionAnswer.db") as con:
+                con.row_factory = sql.Row
+                cur = con.execute("SELECT * FROM NLP_Models WHERE model = :modelName",{'modelName':modelName})
+                rows = cur.fetchall()
+        except:
+            con.rollback()
+            return "Exception occurred while fetching the list of models"
+        finally:
+            con.close()
+        return rows
