@@ -32,7 +32,7 @@ def getModelsList(modelName=None):
                 data = modelHelper.getModelList()
 
                 if data is not None:
-                    return jsonify(data)
+                    return data
                 else:
                     return modelHelper.errorResponseMessage(ResponseErrorMessage.DATA_NOT_FOUND.value)
         elif request.method == 'DELETE':
@@ -46,7 +46,7 @@ def getModelsList(modelName=None):
                     data = modelHelper.getModelList()
 
                     if data is not None:
-                        return jsonify(data)
+                        return data
                     else:
                         return modelHelper.errorResponseMessage(ResponseErrorMessage.DATA_NOT_FOUND.value)
                 else:
@@ -58,7 +58,7 @@ def getModelsList(modelName=None):
 
             data = modelHelper.getModelList()
             if data is not None:
-                return jsonify(data)
+                return data
             else:
                 return modelHelper.errorResponseMessage(ResponseErrorMessage.DATA_NOT_FOUND.value)
 
@@ -81,7 +81,7 @@ def findAnswer(modelName=None):
         answer = modelHelper.findAnswer(modelName, requestMessage)
 
         if answer is not None:
-            return jsonify(answer)
+            return answer
         else:
             return modelHelper.errorResponseMessage(ResponseErrorMessage.DATA_NOT_FOUND.value)
 
@@ -104,9 +104,10 @@ def listAnswers(modelName=None, startTime=None, endTime=None):
         recentlyAnsweredQuestionsList = modelHelper.getRecentlyAnsweredQuestions(modelName, startTime, endTime)
 
         if recentlyAnsweredQuestionsList is not None:
-            return jsonify(recentlyAnsweredQuestionsList)
+            return recentlyAnsweredQuestionsList
         else:
             return modelHelper.errorResponseMessage(ResponseErrorMessage.ERORR_OCCUREED.value)
+
 
 @app01.errorhandler(Exception)
 def handle_exception(error):
