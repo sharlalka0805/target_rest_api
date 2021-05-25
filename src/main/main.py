@@ -11,7 +11,10 @@ app.register_blueprint(restAPIController.app01)
 if __name__ == '__main__':
 
     db_helper = dbHelper()
-    message = db_helper.initialSetUp()
+
+    # Do the initial DB setup
+    db_helper.createDatabase()
+    message = db_helper.insertintialdata()
     print(message)
 
     modelHelper = modelHelper()
