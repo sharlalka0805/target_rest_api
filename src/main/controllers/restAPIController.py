@@ -17,6 +17,7 @@ def load_app():
     title = 'Welcome'
     return "<html><h1> This service is UP and Running ... !!! </h1></html>"
 
+# Method to get list of available models , Add a model , Delete an existing model
 @app01.route('/models', methods=['GET', 'PUT','DELETE'])
 def getModelsList(modelName=None):
         print("inside getModelsList in restAPIController ")
@@ -27,7 +28,6 @@ def getModelsList(modelName=None):
             requestMessage = request.json
             message = modelHelper.addModel(requestMessage)
 
-            # TODO: log an entry in logger
             if message == "Model added successfully":
                 data = modelHelper.getModelList()
 
@@ -50,7 +50,7 @@ def getModelsList(modelName=None):
                     else:
                         return modelHelper.errorResponseMessage(ResponseErrorMessage.DATA_NOT_FOUND.value)
                 else:
-                    return modelHelper.errorResponseMessage(ResponseErrorMessage.DATA_DOES_NOT_ALREDAY_EXISTS.value)
+                    return modelHelper.errorResponseMessage(ResponseErrorMessage.DATA_DOES_NOT_ALREADY_EXISTS.value)
             else:
                 return modelHelper.errorResponseMessage(ResponseErrorMessage.MISSING_INFO.value)
         else:
@@ -68,12 +68,10 @@ def getModelsList(modelName=None):
 def findAnswer(modelName=None):
         modelName = request.args.get('model')
 
-        # TODO: IF user has not provided any model name,pick this default model
         if modelName == '':
-            print('Inside qwqqqqqq findAnswer using model =  ', modelName)
             modelName = 'bert-base-multilingual-uncased'
+            print('Inside  findAnswer using model =  ', modelName)
 
-        print('Inside findAnswer using model =  ', modelName)
         # Fetch the request JSON
         requestMessage = request.json
 
@@ -85,7 +83,7 @@ def findAnswer(modelName=None):
         else:
             return modelHelper.errorResponseMessage(ResponseErrorMessage.DATA_NOT_FOUND.value)
 
-# List recently answered questionsgetModelsList
+# List recently answered questions
 @app01.route('/answer', methods=['GET'])
 def listAnswers(modelName=None, startTime=None, endTime=None):
 
@@ -108,7 +106,7 @@ def listAnswers(modelName=None, startTime=None, endTime=None):
         else:
             return modelHelper.errorResponseMessage(ResponseErrorMessage.ERORR_OCCUREED.value)
 
-
+# Exception Handler
 @app01.errorhandler(Exception)
 def handle_exception(error):
         message = [str(x) for x in error.args]
