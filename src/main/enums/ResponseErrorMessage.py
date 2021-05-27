@@ -9,3 +9,4 @@ class ResponseErrorMessage(enum.Enum):
     END_TIME = "End time not specified"
     DATA_ALREADY_EXISTS = "Model already exists"
     DATA_DOES_NOT_ALREADY_EXISTS = "Model to be deleted is not available"
+    NO_LOGS_FOUND = "NO report data found"
