@@ -14,7 +14,7 @@ if __name__ == '__main__':
 
     # Do the initial DB setup
     db_helper.createDatabase()
-    message = db_helper.insertintialdata()
+    message = db_helper.insertInitialData()
     print(message)
 
     modelHelper = modelHelper()
