@@ -1,3 +1,4 @@
+FROM python:3.6-slim-buster
 FROM tensorflow/tensorflow
 FROM pytorch/pytorch
 
@@ -16,4 +17,5 @@ COPY src/main/ .
 RUN chmod 777 -R *
 
 # Running Python Application
-CMD ["python3", "/usr/src/app/main.py"]
+#CMD ["python3", "/usr/src/app/main.py"]
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 app:app
