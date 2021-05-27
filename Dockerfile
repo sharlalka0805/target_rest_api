@@ -13,6 +13,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copying src code to Container
 COPY . /usr/src/app
+WORKDIR /usr/src/app
+RUN chmod 777 -R *
 
 # Application Environment variables
 #ENV PORT 8080
@@ -24,4 +26,4 @@ COPY . /usr/src/app
 VOLUME ["/app-data"]
 
 # Running Python Application
-CMD ["python3", "/app/src/main/main.py"]
+CMD ["python3", "/src/main/main.py"]
