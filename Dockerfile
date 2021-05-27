@@ -16,4 +16,4 @@ COPY src/main/ .
 RUN chmod 777 -R *
 
 # Running Python Application
-CMD ["python3", "/main.py"]
+CMD ["python3", "/usr/src/app/main.py"]
