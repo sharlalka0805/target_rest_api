@@ -38,9 +38,21 @@ conn.commit()
 
 conn.close()
 
-def insert_logger(logger_2):
-    with conn:
-        c.execute("INSERT INTO logger VALUES (:first,:last,:comment)", {'first': logger_2.first, 'last': logger_1.last
-        , 'comment': logger_1.comment})
 
 
+conn = sqlite3.connect('questionAnswer.db')
+
+c = conn.cursor()
+
+c.execute(""" CREATE TABLE IF NOT EXISTS NLP_Models (name text,tokenizer text,model text)""")
+
+c.execute(""" INSERT INTO NLP_Models(name,tokenizer,model) 
+                                SELECT 'bert-base-multilingual-uncased'
+                                        ,'bert-base-multilingual-uncased'
+                                        ,'bert-base-multilingual-uncased' 
+                                WHERE NOT EXISTS(
+                                SELECT 1 FROM NLP_Models WHERE name = 'bert-base-multilingual-uncased'); """)
+
+c.execute("Select * from NLP_Models")
+
+print(c.fetchall())
