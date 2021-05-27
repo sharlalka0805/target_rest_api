@@ -11,16 +11,14 @@ WORKDIR /usr/src/app
 COPY requirements.txt /usr/src/app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-#RUN pip install -r requirements.txt
-
 # Copying src code to Container
 COPY . /usr/src/app
 
 # Application Environment variables
-ENV PORT 8080
+#ENV PORT 8080
 
 # Exposing Ports
-EXPOSE $PORT
+#EXPOSE $PORT
 
 # Setting Persistent data
 VOLUME ["/app-data"]
