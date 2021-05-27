@@ -13,9 +13,8 @@ COPY requirements.txt .
 RUN pip install  -r requirements.txt
 
 # Copying src code to Container
-COPY src/main/ .
+COPY  . /usr/src/app
 RUN chmod 777 -R *
 
 # Running Python Application
-#CMD ["python3", "/usr/src/app/main.py"]
-CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 main:app
+CMD ["python3", "/app/main.py"]
