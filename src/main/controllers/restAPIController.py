@@ -106,6 +106,12 @@ def listAnswers(modelName=None, startTime=None, endTime=None):
         else:
             return modelHelper.errorResponseMessage(ResponseErrorMessage.ERORR_OCCUREED.value)
 
+@app01.route('/report', methods=['GET'])
+def generateReport():
+    print('Inside generateReport .. ')
+    return modelHelper.getReport()
+
+
 # Exception Handler
 @app01.errorhandler(Exception)
 def handle_exception(error):
