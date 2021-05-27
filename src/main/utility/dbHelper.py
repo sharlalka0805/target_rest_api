@@ -31,13 +31,15 @@ class dbHelper:
         finally:
             con.close()
 
-    def insertintialdata(self):
+    def insertInitialData(self):
         try:
+            print('Inside insertintialdata')
+
             with sql.connect("questionAnswer.db") as con:
                 cur = con.cursor()
                 # Create the basic tables
 
-                cur.execute(""" INSERT INTO NLP_Models(name,tokenizer,model) 
+                cur.execute(""" INSERT INTO NLP_Models VALUES(name,tokenizer,model) 
                                 SELECT 'bert-base-multilingual-uncased'
                                         ,'bert-base-multilingual-uncased'
                                         ,'bert-base-multilingual-uncased' 
@@ -48,7 +50,7 @@ class dbHelper:
                 return "Initial DB setup completed"
         except:
             con.rollback()
-            return "Exception occurred while initial DB setup"
+            return "Exception occurred while initial DB inserts"
         finally:
             con.close()
 
@@ -175,9 +177,25 @@ class dbHelper:
                 con.row_factory = sql.Row
                 cur = con.execute("SELECT * FROM NLP_Models WHERE model = :modelName", {'modelName': modelName})
                 rows = cur.fetchall()
+                return rows
         except:
             con.rollback()
             return "Exception occurred while fetching the list of models"
         finally:
             con.close()
-        return rows
+
+
+    def getDBLogs(self):
+        try:
+            with sql.connect("questionAnswer.db") as con:
+                con.row_factory = sql.Row
+                select_query = "SELECT * FROM Question_Answer order by createdDate desc"
+                cur = con.execute(select_query)
+                rows = cur.fetchall()
+                return rows
+        except:
+            con.rollback()
+            return "Exception occurred while fetching the list of models"
+        finally:
+            con.close()
+
