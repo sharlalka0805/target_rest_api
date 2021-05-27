@@ -65,6 +65,7 @@ class modelHelper:
         print('Inside modelHelper.getModelList')
 
         data = self.db_helper.listModels()
+        print(data)
 
         if data is not None:
 
@@ -165,6 +166,22 @@ class modelHelper:
             else:
                 pass
 
+
+    def getReport(self):
+        print('Inside modelHelper.getReport')
+        data = self.db_helper.getDBLogs()
+
+        print(type(data))
+        print('Data fetched == ' , data)
+
+        if len(data) != 0:
+            dbLogList = []
+            for row in data:
+                dbLogList.append(appLogger(row[0],row[1],row[2],row[3],row[4]))
+                print('before json dumps')
+                return json.dumps(dbLogList, default=lambda x: x.__dict__)
+        else:
+            return self.errorResponseMessage(ResponseErrorMessage.NO_LOGS_FOUND.value)
 
     def errorResponseMessage(self, message):
         print('Inside errorResponseMessage message = ',message)
