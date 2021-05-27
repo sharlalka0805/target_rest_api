@@ -1,5 +1,4 @@
 from flask import Flask
-import restAPIController
 from dbHelper import dbHelper
 from modelHelper import modelHelper
 
