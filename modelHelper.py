@@ -48,11 +48,11 @@ class modelHelper:
                               ,'answer':answer
                               ,'context' : requestMessage['context']}
 
-            self.db_helper.saveDBLog(appLogger(modelName
-                           ,actionTypes.FIND_ANSWER.value
-                           ,action_details
-                           ,'USER'
-                           ,int(datetime.utcnow().timestamp())))
+            #self.db_helper.saveDBLog(appLogger(modelName
+             #              ,actionTypes.FIND_ANSWER.value
+             #              ,action_details
+             #              ,'USER'
+              #             ,int(datetime.utcnow().timestamp())))
 
             # Return response json
             return json.dumps(question_answer, default=lambda x: x.__dict__)
@@ -116,13 +116,13 @@ class modelHelper:
             # Insert a log
             action_details = {'name': requestMessage['name']
                 , 'tokenizer': requestMessage['tokenizer']
-                , 'model': requestMessage['contemodel']}
+                , 'model': requestMessage['model']}
 
-            self.db_helper.saveDBLog(appLogger(requestMessage['name']
-                                               , actionTypes.ADD_MODEL.value
-                                               , action_details
-                                               , 'USER'
-                                               , int(datetime.utcnow().timestamp())))
+            #self.db_helper.saveDBLog(appLogger(requestMessage['name']
+             #                                  , actionTypes.ADD_MODEL.value
+              #                                 , action_details
+             #                                  , 'USER'
+              #                                 , int(datetime.utcnow().timestamp())))
 
             return message
 
@@ -143,11 +143,11 @@ class modelHelper:
             #Insert a log
             action_details = {'modelName': 'Delete the model'+ modelName}
 
-            self.db_helper.saveDBLog(appLogger(modelName
-                                               , actionTypes.DELETE_MODEL.value
-                                               , action_details
-                                               , 'USER'
-                                               , int(datetime.utcnow().timestamp())))
+            #self.db_helper.saveDBLog(appLogger(modelName
+             #                                  , actionTypes.DELETE_MODEL.value
+             #                                  , action_details
+              #                                 , 'USER'
+               #                                , int(datetime.utcnow().timestamp())))
             return message
 
     # Method to fetch details of a specific model
