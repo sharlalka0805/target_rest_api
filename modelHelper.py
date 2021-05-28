@@ -22,6 +22,7 @@ class modelHelper:
         # Fetch the tokenizer details from DB for this model
         # If model not found in the current database - return error
         modelDetails = self.getModelDetails(modelName)
+
         print('Inside modelHelper.findAnswer for modelDetails = ',modelDetails)
 
         if modelDetails is not None:
@@ -58,7 +59,7 @@ class modelHelper:
             return json.dumps(question_answer, default=lambda x: x.__dict__)
         else:
             # Return response - In case model does not exist
-            self.errorResponseMessage(ResponseErrorMessage.DATA_NOT_FOUND.value)
+            return self.errorResponseMessage(ResponseErrorMessage.DATA_NOT_FOUND.value)
 
     # Method to fetch current list of models present in the system
     def getModelList(self):
