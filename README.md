@@ -35,20 +35,19 @@ Service URL : https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/models
 Response Type : JSON</br>
 Sample Response Format:</br>
 
-`[</br>
-    {</br>
-        "name": "distilled-bert",</br>
-         "tokenizer": "distilbert-base-uncased-distilled-squad",</br>
-          "model": "distilbert-base-uncased-distilled-squad"</br>
-    },</br>
-    {</br>
-         "name": "deepset-roberta",</br>
-         "tokenizer": "deepset/roberta-base-squad2",</br>
-         "model": "deepset/roberta-base-squad2"</br>
-    }</br>
-]`
-</br></br></br>
-
+      [
+          {
+              "name": "distilled-bert",
+               "tokenizer": "distilbert-base-uncased-distilled-squad",
+                "model": "distilbert-base-uncased-distilled-squad"
+          },
+          {
+               "name": "deepset-roberta",
+               "tokenizer": "deepset/roberta-base-squad2",
+               "model": "deepset/roberta-base-squad2"
+          }<
+      ]
+</br></br>
 
 <b>Add a Model :</b> This route allows a user to add a new model into the server and make it available for inference.</br>
 
@@ -59,30 +58,33 @@ Method and path: PUT /models</br>
 Response Type : JSON</br></br>
 
 Sample Request Body Format: </br>
-    `{</br>
-    "name": "bert-tiny",
-    "tokenizer": "mrm8488/bert-tiny-5-finetuned-squadv2",
-    "model": "mrm8488/bert-tiny-5-finetuned-squadv2"
-    }`
+
+     {
+        "name": "bert-tiny",
+        "tokenizer": "mrm8488/bert-tiny-5-finetuned-squadv2",
+        "model": "mrm8488/bert-tiny-5-finetuned-squadv2"
+      }
     
 Sample Response Format:</br>
-    `[
-        {
-            "name": "distilled-bert",
-            "tokenizer": "distilbert-base-uncased-distilled-squad",
-            "model": "distilbert-base-uncased-distilled-squad"
-        },
-        {
-            "name": "deepset-roberta",
-            "tokenizer": "deepset/roberta-base-squad2",
-            "model": "deepset/roberta-base-squad2"
-        },
-    {
-        "name": "bert-tiny",</br>
-        "tokenizer": "mrm8488/bert-tiny-5-finetuned-squadv2",</br>
-        "model": "mrm8488/bert-tiny-5-finetuned-squadv2"</br>
-    }
-  ]`
+ 
+ 
+     [
+          {
+              "name": "distilled-bert",
+              "tokenizer": "distilbert-base-uncased-distilled-squad",
+              "model": "distilbert-base-uncased-distilled-squad"
+          },
+          {
+              "name": "deepset-roberta",
+              "tokenizer": "deepset/roberta-base-squad2",
+              "model": "deepset/roberta-base-squad2"
+          },
+          {
+              "name": "bert-tiny",</br>
+              "tokenizer": "mrm8488/bert-tiny-5-finetuned-squadv2",</br>
+              "model": "mrm8488/bert-tiny-5-finetuned-squadv2"</br>
+          }
+     ]
     </br>
 
 <b>Delete a Model :</b> This route allows a user to delete an existing model on the server such that it is no longer
@@ -97,7 +99,8 @@ Query Parameters:</br> - <model name> (required) - The name of the model to be d
 Response Type : JSON</br>
 
 Sample Response Format:</br>
-   ` [
+
+      [
         {
             "name": "distilled-bert",
              "tokenizer": "distilbert-base-uncased-distilled-squad",
@@ -108,8 +111,9 @@ Sample Response Format:</br>
              "tokenizer": "deepset/roberta-base-squad2",
              "model": "deepset/roberta-base-squad2"
         }
-    ]`</br>
-</br></br></br>
+    ]
+    
+ </br></br>
 
 <b>Answer a Question :</b> This route uses one of the available models to answer a question, given the context provided in
 the JSON payload.</br>
@@ -125,31 +129,31 @@ question. If no model name is provided use a default model. </br>
     - Response Type : JSON</br>
 </br>
 Sample Request Body Format: </br>
-    `{ </br>
-    "question": "who did holly matthews play in waterloo rd?", </br>
-    "context": "She attended the British drama school East 15 in 2005, </br>
-    and left after winning a high-profile role in the BBC drama Waterloo </br>
-    Road, playing the bully Leigh-Ann Galloway.[6] Since that role, </br>
-    Matthews has continued to act in BBC's Doctors, playing Connie </br>
-    Whitfield; in ITV's The Bill playing drug addict Josie Clarke; and </br>
-    she was back in the BBC soap Doctors in 2009, playing Tansy Flack." </br>
-    }` </br>
 
-Sample Response Format:</br>
+          { 
+                "question": "who did holly matthews play in waterloo rd?",
+                "context": "She attended the British drama school East 15 in 2005,
+                            and left after winning a high-profile role in the BBC drama Waterloo 
+                            Road, playing the bully Leigh-Ann Galloway.[6] Since that role, 
+                            Matthews has continued to act in BBC's Doctors, playing Connie
+                           Whitfield; in ITV's The Bill playing drug addict Josie Clarke; and
+                            she was back in the BBC soap Doctors in 2009, playing Tansy Flack."
+          }
+          
+   Sample Response Format:</br>
 
-
-    `{
-          "timestamp": 1621602784,</br>
-           "model": "deepset-roberta",</br>
-          "answer": "Leigh-Ann Galloway",</br>
-          "question": "who did holly matthews play in waterloo rd?",</br>
-          "context": "She attended the British drama school East 15 in 2005,</br>
-                      and left after winning a high-profile role in the BBC drama Waterloo</br>
-                    Road, playing the bully Leigh-Ann Galloway.[6] Since that role,</br>
-                  Matthews has continued to act in BBC's Doctors, playing Connie</br>
-                  Whitfield; in ITV's The Bill playing drug addict Josie Clarke; and</br>
-                she was back in the BBC soap Doctors in 2009, playing Tansy Flack."</br>
-    }`
+    {
+          "timestamp": 1621602784,
+           "model": "deepset-roberta",
+          "answer": "Leigh-Ann Galloway",
+          "question": "who did holly matthews play in waterloo rd?",
+          "context": "She attended the British drama school East 15 in 2005,
+                      and left after winning a high-profile role in the BBC drama Waterloo
+                    Road, playing the bully Leigh-Ann Galloway.[6] Since that role,
+                  Matthews has continued to act in BBC's Doctors, playing Connie
+                  Whitfield; in ITV's The Bill playing drug addict Josie Clarke; and
+                she was back in the BBC soap Doctors in 2009, playing Tansy Flack."
+    }
 </br></br>
 
 <b>List Recently Answered Questions :</b> This route returns recently answered questions.</br>
@@ -169,14 +173,14 @@ timestamp></br>
 Request:
 
           {
-             "timestamp": 1621602784,</br>
-             "model": "deepset-roberta",</br>
-              "answer": "Leigh-Ann Galloway",</br>
-             "question": "who did holly matthews play in waterloo rd?",</br>
-             "context": "She attended the British drama school East 15 in 2005,</br>
-                    and left after winning a high-profile role in the BBC drama Waterloo</br>
-                    Road, playing the bully Leigh-Ann Galloway.[6] Since that role,</br>
-                    Matthews has continued to act in BBC's Doctors, playing Connie</br>
-                    Whitfield; in ITV's The Bill playing drug addict Josie Clarke; and</br>
-                    she was back in the BBC soap Doctors in 2009, playing Tansy Flack."</br>
+             "timestamp": 1621602784,
+             "model": "deepset-roberta",
+              "answer": "Leigh-Ann Galloway",
+             "question": "who did holly matthews play in waterloo rd?",
+             "context": "She attended the British drama school East 15 in 2005,
+                    and left after winning a high-profile role in the BBC drama Waterlo
+                    Road, playing the bully Leigh-Ann Galloway.[6] Since that role,
+                    Matthews has continued to act in BBC's Doctors, playing Connie
+                    Whitfield; in ITV's The Bill playing drug addict Josie Clarke; and
+                    she was back in the BBC soap Doctors in 2009, playing Tansy Flack."
     }
