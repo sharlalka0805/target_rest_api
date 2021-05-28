@@ -135,7 +135,7 @@ class modelHelper:
 
         if modelDetails is None:
             print('Inside modelHelper.deleteModel == Model does not exists')
-            return  ResponseErrorMessage.DATA_ALREADY_EXISTS
+            return  self.errorResponseMessage(ResponseErrorMessage.DATA_DOES_NOT_ALREADY_EXISTS.value)
         else:
             print('Inside modelHelper.deleteModel == model to be deleted exists')
             message = self.db_helper.deleteModel(modelName)
