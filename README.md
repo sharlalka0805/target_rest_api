@@ -48,7 +48,7 @@ Sample Response Format:</br>
 
 <b>Add a Model :</b> This route allows a user to add a new model into the server and make it available for inference.</br>
 
- </br>Service URL : https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/models  
+Service URL : https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/models  
 
 Method and path: PUT /models</br>
 Response Type : JSON</br>
