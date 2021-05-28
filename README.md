@@ -61,7 +61,7 @@ Sample Request Body Format: </br>
       "tokenizer": "mrm8488/bert-tiny-5-finetuned-squadv2",
       "model": "mrm8488/bert-tiny-5-finetuned-squadv2"
       }`
-</br>
+</br></br>
 Sample Response Format:</br>
     `[
         {
@@ -128,7 +128,7 @@ Sample Request Body Format: </br>
             Whitfield; in ITV's The Bill playing drug addict Josie Clarke; and </br>
             she was back in the BBC soap Doctors in 2009, playing Tansy Flack." </br>
     }` 
-</br>
+</br></br>
 Sample Response Format:</br>
     `{
             "timestamp": 1621602784,
