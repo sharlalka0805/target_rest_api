@@ -1,5 +1,3 @@
-# shipra_harlalka_assignment_02
-
 # About API </br></br>
 
 This API can be used by users by users to provide to ask a question and fetch an automated answer from the system depending on NLP model used.</br></br>
