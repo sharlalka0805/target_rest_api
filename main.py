@@ -93,6 +93,11 @@ def listAnswers(modelName=None, startTime=None, endTime=None):
 
         # TODO:Check the optional and required conditions for the three parameters
         modelName = request.args.get('model')
+
+        if modelName == '':
+            modelName = 'bert-base-multilingual-uncased'
+            print('Inside  findAnswer using model =  ', modelName)
+
         startTime = request.args.get('start')
         endTime = request.args.get('end')
 
