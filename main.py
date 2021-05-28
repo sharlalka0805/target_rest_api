@@ -136,10 +136,9 @@ if __name__ == '__main__':
     dbHelper = dbHelper()
 
     # Do the initial DB setup
-    dbHelper.createDatabase()
-    message = dbHelper.insertInitialData()
+    message = dbHelper.createDatabase()
+    #message = dbHelper.insertInitialData()
     print(message)
-
 
     # Run our Flask app
     app.run(host='0.0.0.0', port=8080, threaded=True,debug=True)
