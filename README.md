@@ -16,7 +16,7 @@ We used this dependency for answering question.
 
 You need to install all the dependencies avaailable in requirements.txt
 
-# Steps to build and run the API locally via doicker or FLask</br></br>
+# Steps to build and run the API locally via doicker or FLask</br>
 
 1. To build the API locally , install FLASK,Tensorflow,Pytorch  .</br>
 2. Clone the above githib code to your local machine
@@ -25,7 +25,7 @@ You need to install all the dependencies avaailable in requirements.txt
 5. Your local port will be picked and API will be hosted on the same.
 6. You may then your broweser to test this API 
   
-# Available Routes</br></br>
+# Available Routes</br>
 
 <b>List Available Models :</b> This route allows a user to obtain a list of the models currently loaded into the server and available for inference.</br>
 Service URL : https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/models   
