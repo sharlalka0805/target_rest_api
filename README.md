@@ -119,14 +119,14 @@ Sample Response Format:
 Method and path: GET /answer?model=<model name>&start=<start timestamp>&end=<end</br>
 timestamp></br>
     </br>
-   - Query Parameters:</br>
-        - <model name> (optional) - Filter the results by providing a certain model name, such</br>
-        that the results only include answered questions that were answered using the provided</br>
-        model.</br>
-       - <start timestamp> (required) - The starting timestamp, such that answers to questions</br>
-          prior to this timestamp won't be returned.</br>
-       - <end timestamp> (required) - The ending timestamp, such that answers to questions</br>
-         after this timestamp won't be returned.</br>
+    - Query Parameters:</br>
+            - <model name> (optional) - Filter the results by providing a certain model name, such </br>
+              that the results only include answered questions that were answered using the provided </br>
+              model.</br>
+           - <start timestamp> (required) - The starting timestamp, such that answers to questions </br>
+              prior to this timestamp won't be returned. </br>
+           - <end timestamp> (required) - The ending timestamp, such that answers to questions </br>
+             after this timestamp won't be returned. </br>
      
 Sample Response :
 
