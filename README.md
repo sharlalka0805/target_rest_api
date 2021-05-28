@@ -47,7 +47,6 @@ Sample Response Format:</br>
 ]`
 </br></br></br>
 
-
 <b>Add a Model :</b> This route allows a user to add a new model into the server and make it available for inference.</br>
 
 Service URL : https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/models   </br>
@@ -57,12 +56,13 @@ Method and path: PUT /models</br>
 Response Type : JSON</br></br>
 
 Sample Request Body Format: </br>
-    `{</br>
-    "name": "bert-tiny",
-    "tokenizer": "mrm8488/bert-tiny-5-finetuned-squadv2",
-    "model": "mrm8488/bert-tiny-5-finetuned-squadv2"
-    }`
+      `{</br>
+      "name": "bert-tiny",
+      "tokenizer": "mrm8488/bert-tiny-5-finetuned-squadv2",
+      "model": "mrm8488/bert-tiny-5-finetuned-squadv2"
+      }`
     
+</br>
 Sample Response Format:</br>
     `[
         {
@@ -81,7 +81,7 @@ Sample Response Format:</br>
         "model": "mrm8488/bert-tiny-5-finetuned-squadv2"</br>
     }
   ]`
-    </br>
+ </br></br></br>
 
 <b>Delete a Model :</b> This route allows a user to delete an existing model on the server such that it is no longer
 available for inference and returns the remaining list of models as a response. </br>
@@ -106,7 +106,8 @@ Sample Response Format:</br>
              "tokenizer": "deepset/roberta-base-squad2",
              "model": "deepset/roberta-base-squad2"
         }
-    ]`</br>
+    ]`
+    
 </br></br></br>
 
 <b>Answer a Question :</b> This route uses one of the available models to answer a question, given the context provided in
@@ -118,10 +119,11 @@ Service URL : https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/answer?model=
     - Query Parameters:  
         - <model name> (optional) - The name of the model to be used in answering the</br>
 </br>
-question. If no model name is provided use a default model. </br>
+                                  question. If no model name is provided use a default model. </br>
 </br>
     - Response Type : JSON</br>
 </br>
+
 Sample Request Body Format: </br>
     `{ </br>
             "question": "who did holly matthews play in waterloo rd?", </br>
@@ -131,9 +133,11 @@ Sample Request Body Format: </br>
             Matthews has continued to act in BBC's Doctors, playing Connie </br>
             Whitfield; in ITV's The Bill playing drug addict Josie Clarke; and </br>
             she was back in the BBC soap Doctors in 2009, playing Tansy Flack." </br>
-    }` </br>
+    }` 
+    
+</br>
 
-Sample Response Format:</br>
+Sample Response Format:
 </br>
     `{</br>
             "timestamp": 1621602784,</br>
@@ -164,7 +168,7 @@ timestamp></br>
          after this timestamp won't be returned.</br>
      
 Request:
-          {
+          `{
              "timestamp": 1621602784,</br>
              "model": "deepset-roberta",</br>
              "answer": "Leigh-Ann Galloway",</br>
@@ -175,6 +179,6 @@ Request:
                     Matthews has continued to act in BBC's Doctors, playing Connie</br>
                     Whitfield; in ITV's The Bill playing drug addict Josie Clarke; and</br>
                     she was back in the BBC soap Doctors in 2009, playing Tansy Flack."</br>
-    }
+    }`
 
 </br></br></br>
