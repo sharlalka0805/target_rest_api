@@ -26,8 +26,8 @@ You need to install all the dependencies avaailable in requirements.txt
   
 # Available Routes</br>
 
-<b>List Available Models :</b> This route allows a user to obtain a list of the models currently loaded into the server and available for inference.</br>
-Service URL : https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/models   
+<b>List Available Models :</b> This route allows a user to obtain a list of the models currently loaded into the server and available for inference.
+</br>Service URL : https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/models   
 </br>Method and path: GET /models</br>
 Response Type : JSON</br>
 Sample Response Format:</br>
@@ -48,12 +48,10 @@ Sample Response Format:</br>
 
 <b>Add a Model :</b> This route allows a user to add a new model into the server and make it available for inference.</br>
 
-Service URL : https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/models   </br>
+ </br>Service URL : https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/models  
 
 Method and path: PUT /models</br>
-
-Response Type : JSON</br></br>
-
+Response Type : JSON</br>
 Sample Request Body Format: </br>
 
      {
