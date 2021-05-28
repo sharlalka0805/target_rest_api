@@ -25,8 +25,7 @@ Sample Response Format:</br>
          "tokenizer": "deepset/roberta-base-squad2",</br>
          "model": "deepset/roberta-base-squad2"</br>
     }</br>
-]</br>
-</br></br></br>
+]</br></br>
 
 
 <b>Add a Model :</b> This route allows a user to add a new model into the server and make it available for inference.</br>
@@ -75,8 +74,7 @@ Sample Response Format:</br>
          "tokenizer": "deepset/roberta-base-squad2",</br>
          "model": "deepset/roberta-base-squad2"</br>
     }</br>
-]</br>
-</br></br></br>
+]</br></br>
 
 <b>Answer a Question :</b> This route uses one of the available models to answer a question, given the context provided in
 the JSON payload.</br>
@@ -114,8 +112,8 @@ Road, playing the bully Leigh-Ann Galloway.[6] Since that role,</br>
 Matthews has continued to act in BBC's Doctors, playing Connie</br>
 Whitfield; in ITV's The Bill playing drug addict Josie Clarke; and</br>
 she was back in the BBC soap Doctors in 2009, playing Tansy Flack."</br>
-}</br>
-</br></br></br></br>
+}
+</br></br>
 
 <b>List Recently Answered Questions :</b> This route returns recently answered questions.</br>
 Method and path: GET /answer?model=<model name>&start=<start timestamp>&end=<end</br>
