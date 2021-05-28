@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import request, jsonify
-import ResponseErrorMessage
+from ResponseErrorMessage import ResponseErrorMessage
 from dbHelper import dbHelper
 from modelHelper import modelHelper
 
