@@ -36,6 +36,8 @@ def getModelsList(modelName=None):
                     return data
                 else:
                     return modelHelper.errorResponseMessage(ResponseErrorMessage.DATA_NOT_FOUND.value)
+            else:
+                return message
         elif request.method == 'DELETE':
             modelName = request.args.get('model')
             print('Inside deleteModel = ', modelName)
@@ -51,7 +53,7 @@ def getModelsList(modelName=None):
                     else:
                         return modelHelper.errorResponseMessage(ResponseErrorMessage.DATA_NOT_FOUND.value)
                 else:
-                    return modelHelper.errorResponseMessage(ResponseErrorMessage.DATA_DOES_NOT_ALREADY_EXISTS.value)
+                    return message
             else:
                 return modelHelper.errorResponseMessage(ResponseErrorMessage.MISSING_INFO.value)
         else:
