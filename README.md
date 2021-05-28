@@ -45,7 +45,7 @@ Sample Response Format:</br>
          "model": "deepset/roberta-base-squad2"
     }
 ]`
-</br></br>
+</br>
 
 <b>Add a Model :</b> This route allows a user to add a new model into the server and make it available for inference.</br>
 
@@ -80,7 +80,7 @@ Sample Response Format:</br>
         "model": "mrm8488/bert-tiny-5-finetuned-squadv2"
     }
   ]`
- </br></br>
+ </br>
 
 <b>Delete a Model :</b> This route allows a user to delete an existing model on the server such that it is no longer
 available for inference and returns the remaining list of models as a response. </br>
@@ -107,7 +107,7 @@ Sample Response Format:</br>
         }
     ]`
     
-</br></br>
+</br>
 
 <b>Answer a Question :</b> This route uses one of the available models to answer a question, given the context provided in
 the JSON payload.</br>
@@ -171,4 +171,4 @@ Request:
                     she was back in the BBC soap Doctors in 2009, playing Tansy Flack."
             }`
 
-</br></br></br>
+</br></br>
