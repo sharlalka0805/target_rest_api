@@ -3,6 +3,7 @@
 This API can be used by users by users to provide to ask a question and fetch an automated answer from the system depending on NLP model used.</br></br>
 
 # API URL </br>
+https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/
 
 # Dependencies </br>
 
