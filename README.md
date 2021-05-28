@@ -33,17 +33,17 @@ Service URL : https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/models
 Response Type : JSON</br>
 Sample Response Format:</br>
 
-`[</br>
-    {</br>
-        "name": "distilled-bert",</br>
-         "tokenizer": "distilbert-base-uncased-distilled-squad",</br>
-          "model": "distilbert-base-uncased-distilled-squad"</br>
-    },</br>
-    {</br>
+`[
+    {
+        "name": "distilled-bert",
+        "tokenizer": "distilbert-base-uncased-distilled-squad",
+          "model": "distilbert-base-uncased-distilled-squad"
+    },
+    {
          "name": "deepset-roberta",</br>
-         "tokenizer": "deepset/roberta-base-squad2",</br>
-         "model": "deepset/roberta-base-squad2"</br>
-    }</br>
+         "tokenizer": "deepset/roberta-base-squad2",
+         "model": "deepset/roberta-base-squad2"
+    }
 ]`
 </br></br></br>
 
