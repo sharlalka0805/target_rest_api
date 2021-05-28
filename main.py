@@ -1,8 +1,8 @@
 from flask import Flask
 from flask import request, jsonify
 import ResponseErrorMessage
-from helper.dbHelper import dbHelper
-from helper.modelHelper import modelHelper
+from dbHelper import dbHelper
+from modelHelper import modelHelper
 
 
 # Initialize the app
