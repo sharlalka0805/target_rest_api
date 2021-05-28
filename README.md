@@ -6,7 +6,7 @@ This API can be used by users by users to provide to ask a question and fetch an
 
 # Dependencies </br></br>
 
-# Steps to build and run the API locally via doicker or FLask</br></br>
+# Steps to build and run the API locally via docker or FLask</br></br>
 
 # Available Routes</br></br>
 
@@ -99,19 +99,19 @@ Whitfield; in ITV's The Bill playing drug addict Josie Clarke; and </br>
 she was back in the BBC soap Doctors in 2009, playing Tansy Flack." </br>
 } </br>
 
-Sample Response Format:</br>
-</br>
-{</br>
-"timestamp": 1621602784,</br>
-"model": "deepset-roberta",</br>
-"answer": "Leigh-Ann Galloway",</br>
-"question": "who did holly matthews play in waterloo rd?",</br>
-"context": "She attended the British drama school East 15 in 2005,</br>
-and left after winning a high-profile role in the BBC drama Waterloo</br>
-Road, playing the bully Leigh-Ann Galloway.[6] Since that role,</br>
-Matthews has continued to act in BBC's Doctors, playing Connie</br>
-Whitfield; in ITV's The Bill playing drug addict Josie Clarke; and</br>
-she was back in the BBC soap Doctors in 2009, playing Tansy Flack."</br>
+Sample Response Format:
+<
+{
+        "timestamp": 1621602784,
+        "model": "deepset-roberta",
+        "answer": "Leigh-Ann Galloway",
+        "question": "who did holly matthews play in waterloo rd?",
+        "context": "She attended the British drama school East 15 in 2005,
+        and left after winning a high-profile role in the BBC drama Waterloo
+        Road, playing the bully Leigh-Ann Galloway.[6] Since that role,
+        Matthews has continued to act in BBC's Doctors, playing Connie
+        Whitfield; in ITV's The Bill playing drug addict Josie Clarke; and
+        she was back in the BBC soap Doctors in 2009, playing Tansy Flack."
 }
 </br></br>
 
@@ -131,28 +131,28 @@ timestamp></br>
 Sample Response :
 
         [
-{
-"timestamp": 1621602784,
-"model": "deepset-roberta",
-"answer": "Leigh-Ann Galloway",
-"question": "who did holly matthews play in waterloo rd?",
-"context": "She attended the British drama school East 15 in
-2005, and left after winning a high-profile role in the BBC drama
-Waterloo Road, playing the bully Leigh-Ann Galloway.[6] Since that
-role, Matthews has continued to act in BBC's Doctors, playing Connie
-Whitfield; in ITV's The Bill playing drug addict Josie Clarke; and
-she was back in the BBC soap Doctors in 2009, playing Tansy Flack."
-},
-{
-"timestamp": 1621602930,
-"model": "distilled-bert",
-"answer": "Travis Pastrana",
-"question": "who did the first double backflip on a dirt bike?",
-"context": "2006 brought footage of Travis Pastrana completing a
-double backflip on an uphill/sand setup on his popular /"Nitro
-Circus/" Freestyle Motocross movies. On August 4, 2006, at X Games 12
-in Los Angeles, he became the first rider to land a double backflip
-in competition. Having landed another trick that many had considered
-impossible, he vowed never to do it again."
-}
-]
+                {
+                "timestamp": 1621602784,
+                "model": "deepset-roberta",
+                "answer": "Leigh-Ann Galloway",
+                "question": "who did holly matthews play in waterloo rd?",
+                "context": "She attended the British drama school East 15 in
+                2005, and left after winning a high-profile role in the BBC drama
+                Waterloo Road, playing the bully Leigh-Ann Galloway.[6] Since that
+                role, Matthews has continued to act in BBC's Doctors, playing Connie
+                Whitfield; in ITV's The Bill playing drug addict Josie Clarke; and
+                she was back in the BBC soap Doctors in 2009, playing Tansy Flack."
+                },
+                {
+                "timestamp": 1621602930,
+                "model": "distilled-bert",
+                "answer": "Travis Pastrana",
+                "question": "who did the first double backflip on a dirt bike?",
+                "context": "2006 brought footage of Travis Pastrana completing a
+                double backflip on an uphill/sand setup on his popular /"Nitro
+                Circus/" Freestyle Motocross movies. On August 4, 2006, at X Games 12
+                in Los Angeles, he became the first rider to land a double backflip
+                in competition. Having landed another trick that many had considered
+                impossible, he vowed never to do it again."
+                }
+        ]
