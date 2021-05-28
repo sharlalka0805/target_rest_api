@@ -1,11 +1,10 @@
 import sqlite3 as sql
 
-
 class dbHelper:
 
     def createDatabase(self):
         try:
-            with sql.connect("questionAnswer.db") as con:
+            with sql.connect("../questionAnswer.db") as con:
                 cur = con.cursor()
                 # Create the basic tables
                 # AppLogger
@@ -35,7 +34,7 @@ class dbHelper:
         try:
             print('Inside insertintialdata')
 
-            with sql.connect("questionAnswer.db") as con:
+            with sql.connect("../questionAnswer.db") as con:
                 cur = con.cursor()
                 # Create the basic tables
 
@@ -58,7 +57,7 @@ class dbHelper:
 
     def listModels(self):
         try:
-            with sql.connect("questionAnswer.db") as con:
+            with sql.connect("../questionAnswer.db") as con:
                 con.row_factory = sql.Row
                 select_query = "SELECT * FROM NLP_Models"
                 cur = con.execute(select_query)
@@ -73,7 +72,7 @@ class dbHelper:
     def addModel(self, name, tokenizer, model):
         try:
             print('Inside dbHelper.addModel : ', model, tokenizer, name)
-            with sql.connect("questionAnswer.db") as con:
+            with sql.connect("../questionAnswer.db") as con:
                 cur = con.cursor()
                 # Introduce for in case you need to persist an ad-hoc lis
                 cur.execute("INSERT INTO NLP_Models VALUES (?,?,?)", (name, tokenizer, model))
@@ -88,7 +87,7 @@ class dbHelper:
     def deleteModel(self, modelName):
         try:
             print('Inside dbHelper.deleteModel for model = ', modelName)
-            with sql.connect("questionAnswer.db") as con:
+            with sql.connect("../questionAnswer.db") as con:
                 cur = con.cursor()
 
                 cur.execute("DELETE FROM NLP_Models WHERE NAME = :modelName", {'modelName': modelName})
@@ -105,7 +104,7 @@ class dbHelper:
         try:
             print('Inside dbHelper.getRecentlyAnsweredQuestionsList for model = ', modelName, ' startTime = ',
                   startTime, ' endTime = ', endTime)
-            with sql.connect("questionAnswer.db") as con:
+            with sql.connect("../questionAnswer.db") as con:
                 con.row_factory = sql.Row
                 cur = con.cursor()
 
@@ -127,7 +126,7 @@ class dbHelper:
                   ' question = ',
                   questionAnswer.question, ' context = ', questionAnswer.context, ' answer = ', questionAnswer.answer,
                   'timeStamp = ', questionAnswer.timestamp)
-            with sql.connect("questionAnswer.db") as con:
+            with sql.connect("../questionAnswer.db") as con:
 
                 cur = con.cursor()
 
@@ -150,7 +149,7 @@ class dbHelper:
     def saveDBLog(self, appLogger):
         try:
             print('Inside dbHelper.saveDBLog')
-            with sql.connect("questionAnswer.db") as con:
+            with sql.connect("../questionAnswer.db") as con:
 
                 cur = con.cursor()
 
@@ -173,7 +172,7 @@ class dbHelper:
     def getModelDetails(self, modelName):
         print('Inside dbHelper.getModelDetails for modelName = ', modelName)
         try:
-            with sql.connect("questionAnswer.db") as con:
+            with sql.connect("../questionAnswer.db") as con:
                 con.row_factory = sql.Row
                 cur = con.execute("SELECT * FROM NLP_Models WHERE model = :modelName", {'modelName': modelName})
                 rows = cur.fetchall()
@@ -187,7 +186,7 @@ class dbHelper:
 
     def getDBLogs(self):
         try:
-            with sql.connect("questionAnswer.db") as con:
+            with sql.connect("../questionAnswer.db") as con:
                 con.row_factory = sql.Row
                 select_query = "SELECT * FROM Question_Answer order by createdDate desc"
                 cur = con.execute(select_query)
