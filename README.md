@@ -138,7 +138,7 @@ Sample Request Body Format: </br>
 Sample Response Format:</br>
 
 
-    `{</br>
+    `{
           "timestamp": 1621602784,</br>
            "model": "deepset-roberta",</br>
           "answer": "Leigh-Ann Galloway",</br>
