@@ -78,13 +78,14 @@ def findAnswer(modelName=None):
         # Fetch the request JSON
         requestMessage = request.json
 
+        if requestMessage is None:
+            return modelHelper.errorResponseMessage(ResponseErrorMessage.Question_Not_Asked.value)
+
+
         # Call the method to answer the questions
         answer = modelHelper.findAnswer(modelName, requestMessage)
 
-        if answer is not None:
-            return answer
-        else:
-            return modelHelper.errorResponseMessage(ResponseErrorMessage.DATA_NOT_FOUND.value)
+        return answer
 
 # List recently answered questions
 @app.route('/answer', methods=['GET'])
