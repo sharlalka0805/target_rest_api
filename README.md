@@ -6,6 +6,8 @@ This API can be used by users by users to provide to ask a question and fetch an
 
 # API URL </br>
 
+https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/
+
 # Dependencies </br></br>
 
 ### Torch: 
