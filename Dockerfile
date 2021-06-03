@@ -8,6 +8,10 @@ RUN mkdir -p /usr/src/app
 # Setting Home Directory for containers
 WORKDIR /usr/src/app
 
+# install psycopg2 dependencies
+RUN apk update
+RUN apk add postgresql-dev gcc python3-dev musl-dev
+
 # Installing python dependencies
 COPY requirements.txt .
 RUN pip install  -r requirements.txt
