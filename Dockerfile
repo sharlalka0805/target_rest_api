@@ -1,4 +1,4 @@
-FROM python:3.6.3-alpine3.6
+FROM python:3.7.4-alpine
 FROM tensorflow/tensorflow
 FROM pytorch/pytorch
 
@@ -10,6 +10,8 @@ WORKDIR /usr/src/app
 
 #
 ENV PATH=/usr/lib/postgresql/X.Y/bin/:$PATH
+
+RUN sudo apt-get install libpq-dev python-dev
 
 # Installing python dependencies
 COPY requirements.txt .
