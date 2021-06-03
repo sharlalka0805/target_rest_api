@@ -1,11 +1,40 @@
-import sqlite3 as sql
+import os
+import psycopg2
 
 class dbHelper:
 
+    def __init__(self):
+        print('Inside dbhelper init')
+
+        # Format DB connection information
+        sslmode = "sslmode=verify-ca"
+        sslrootcert = "sslrootcert={}".format(os.environ.get('PG_SSLROOTCERT'))
+        sslcert = "sslcert={}".format(os.environ.get('PG_SSLCERT'))
+        sslkey = "sslkey={}".format(os.environ.get('PG_SSLKEY'))
+        hostaddr = "hostaddr={}".format(os.environ.get('PG_HOST'))
+        user = "user=postgres"
+        password = "password={}".format(os.environ.get('PG_PASSWORD'))
+        dbname = "dbname=mgmt590"
+
+        # Construct database connect string
+        db_connect_string = " ".join([
+            sslmode,
+            sslrootcert,
+            sslcert,
+            sslkey,
+            hostaddr,
+            user,
+            password,
+            dbname
+        ])
+
+        # Connect to your postgres DB
+        self.con = psycopg2.connect(db_connect_string)
+
+
     def createDatabase(self):
         try:
-            with sql.connect("questionAnswer.db") as con:
-                cur = con.cursor()
+                cur = self.con.cursor()
                 # Create the basic tables
                 # AppLogger
                 cur.execute(""" CREATE TABLE IF NOT EXISTS APP_LOGGER (model_name text
@@ -22,103 +51,97 @@ class dbHelper:
                     """CREATE TABLE IF NOT EXISTS Question_Answer (modelName text,question text,context text,
                     answer text,createdDate integer)""")
 
-                con.commit()
+                self.con.commit()
                 return "Initial DB setup completed"
         except:
-            con.rollback()
+            self.con.rollback()
             return "Exception occurred while initial DB setup"
         finally:
-            con.close()
+            self.con.close()
 
     def insertInitialData(self):
         try:
             print('Inside insertintialdata')
 
-            with sql.connect("questionAnswer.db") as con:
-                cur = con.cursor()
+            cur = self.con.cursor()
                 # Create the basic tables
 
-                cur.execute(""" INSERT INTO NLP_Models VALUES(name,tokenizer,model) 
+            cur.execute(""" INSERT INTO NLP_Models VALUES(name,tokenizer,model) 
                                 SELECT 'bert-base-multilingual-uncased'
                                         ,'bert-base-multilingual-uncased'
                                         ,'bert-base-multilingual-uncased' 
                                 WHERE NOT EXISTS(
                                 SELECT 1 FROM NLP_Models WHERE name = 'bert-base-multilingual-uncased'); """)
 
-                con.commit()
-                return "Initial DB setup completed"
+            self.con.commit()
+            return "Initial DB setup completed"
         except:
-            con.rollback()
+            self.con.rollback()
             return "Exception occurred while initial DB inserts"
         finally:
-            con.close()
+            self.con.close()
 
-    # Create method to upload default data in NLP Models table using XML
 
     def listModels(self):
         try:
-            with sql.connect("questionAnswer.db") as con:
-                con.row_factory = sql.Row
-                select_query = "SELECT * FROM NLP_Models"
-                cur = con.execute(select_query)
-                rows = cur.fetchall()
+            select_query = "SELECT * FROM NLP_Models"
+            cur = self.con.execute(select_query)
+            rows = cur.fetchall()
         except:
-            con.rollback()
+            self.con.rollback()
             return "Exception occurred while fetching the list of models"
         finally:
-            con.close()
+            self.con.close()
         return rows
 
     def addModel(self, name, tokenizer, model):
         try:
             print('Inside dbHelper.addModel : ', model, tokenizer, name)
-            with sql.connect("questionAnswer.db") as con:
-                cur = con.cursor()
-                # Introduce for in case you need to persist an ad-hoc lis
-                cur.execute("INSERT INTO NLP_Models VALUES (?,?,?)", (name, tokenizer, model))
-                con.commit()
-                return "Model added successfully"
+
+            cur = self.con.cursor()
+            # Introduce for in case you need to persist an ad-hoc lis
+            cur.execute("INSERT INTO NLP_Models VALUES (?,?,?)", (name, tokenizer, model))
+            self.con.commit()
+            return "Model added successfully"
         except:
-            con.rollback()
+            self.con.rollback()
             return "Exception occured while trying to add model"
         finally:
-            con.close()
+            self.con.close()
 
     def deleteModel(self, modelName):
         try:
             print('Inside dbHelper.deleteModel for model = ', modelName)
-            with sql.connect("questionAnswer.db") as con:
-                cur = con.cursor()
+            cur = self.con.cursor()
 
-                cur.execute("DELETE FROM NLP_Models WHERE NAME = :modelName", {'modelName': modelName})
-                con.commit()
-                print('Inside dbHelper.deleteModel for model = ', modelName, "Model deleted successfully")
-                return "Model deleted successfully"
+            cur.execute("DELETE FROM NLP_Models WHERE NAME = :modelName", {'modelName': modelName})
+            self.con.commit()
+            print('Inside dbHelper.deleteModel for model = ', modelName, "Model deleted successfully")
+            return "Model deleted successfully"
         except:
-            con.rollback()
+            self.con.rollback()
             return "Exception occured while trying to delete model for model = " + modelName
         finally:
-            con.close()
+            self.con.close()
 
     def getRecentlyAnsweredQuestionsList(self, modelName, startTime, endTime):
         try:
             print('Inside dbHelper.getRecentlyAnsweredQuestionsList for model = ', modelName, ' startTime = ',
                   startTime, ' endTime = ', endTime)
-            with sql.connect("questionAnswer.db") as con:
-                con.row_factory = sql.Row
-                cur = con.cursor()
 
-                cur.execute(
+            cur = self.con.cursor()
+
+            cur.execute(
                     "SELECT * FROM Question_Answer WHERE createdDate >= :startTime and createdDate <= :endTime and modelName = :modelName",
                     {'startTime': startTime, 'endTime': endTime, 'modelName': modelName})
 
-                rows = cur.fetchall()
-                return rows
+            rows = cur.fetchall()
+            return rows
         except:
-            con.rollback()
+            self.con.rollback()
             return "Exception occured while trying to fetch the list of recently answered questions"
         finally:
-            con.close()
+            self.con.close()
 
     def saveRecentlyAnsweredQuestion(self, questionAnswer):
         try:
@@ -126,75 +149,70 @@ class dbHelper:
                   ' question = ',
                   questionAnswer.question, ' context = ', questionAnswer.context, ' answer = ', questionAnswer.answer,
                   'timeStamp = ', questionAnswer.timestamp)
-            with sql.connect("questionAnswer.db") as con:
 
-                cur = con.cursor()
 
-                cur.execute(
+            cur = self.con.cursor()
+
+            cur.execute(
                     "INSERT INTO Question_Answer VALUES (?,?,?,?,?)",
                     {'modelName': questionAnswer.modelName
                         , 'question': questionAnswer.question
                         , 'context': questionAnswer.context
                         , 'answer': questionAnswer.answer
                         , 'timestamp': questionAnswer.timestamp})
-                print('Inside dbHelper.getRecentlyAnsweredQuestionsList ', 'Data saved successfully')
-                return "Data saved successfully"
+            print('Inside dbHelper.getRecentlyAnsweredQuestionsList ', 'Data saved successfully')
+            return "Data saved successfully"
         except:
-            con.rollback()
+            self.con.rollback()
             return "Exception occured while saving question answer data"
         finally:
-            con.close()
+            self.con.close()
 
     # Create method to store all the logs
     def saveDBLog(self, appLogger):
         try:
             print('Inside dbHelper.saveDBLog')
-            with sql.connect("questionAnswer.db") as con:
 
-                cur = con.cursor()
+            cur = self.con.cursor()
 
-                cur.execute(
+            cur.execute(
                     "INSERT INTO APP_LOGGER VALUES (?,?,?,?,?)",
                     {'modelName': appLogger.modelName
                         , 'action_type': appLogger.action_type
                         , 'action_details': appLogger.action_details
                         , 'created_by': appLogger.created_by
                         , 'created_time': appLogger.created_time})
-                print('Inside dbHelper.saveDBLog ', 'Data saved successfully')
-                return "Data saved successfully"
+            print('Inside dbHelper.saveDBLog ', 'Data saved successfully')
+            return "Data saved successfully"
         except:
-            con.rollback()
+            self.con.rollback()
             return "Exception occured while saving question answer data"
         finally:
-            con.close()
+            self.con.close()
 
     # Method to get mode details
     def getModelDetails(self, modelName):
         print('Inside dbHelper.getModelDetails for modelName = ', modelName)
         try:
-            with sql.connect("questionAnswer.db") as con:
-                con.row_factory = sql.Row
-                cur = con.execute("SELECT * FROM NLP_Models WHERE model = :modelName", {'modelName': modelName})
-                rows = cur.fetchall()
-                return rows
+            cur = self.con.execute("SELECT * FROM NLP_Models WHERE model = :modelName", {'modelName': modelName})
+            rows = cur.fetchall()
+            return rows
         except:
-            con.rollback()
+            self.con.rollback()
             return "Exception occurred while fetching the list of models"
         finally:
-            con.close()
+            self.con.close()
 
 
     def getDBLogs(self):
         try:
-            with sql.connect("questionAnswer.db") as con:
-                con.row_factory = sql.Row
-                select_query = "SELECT * FROM Question_Answer order by createdDate desc"
-                cur = con.execute(select_query)
-                rows = cur.fetchall()
-                return rows
+            select_query = "SELECT * FROM Question_Answer order by createdDate desc"
+            cur = self.con.execute(select_query)
+            rows = cur.fetchall()
+            return rows
         except:
-            con.rollback()
+            self.con.rollback()
             return "Exception occurred while fetching the list of models"
         finally:
-            con.close()
+            self.con.close()
 
