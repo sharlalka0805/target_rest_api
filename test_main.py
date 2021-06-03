@@ -4,7 +4,7 @@ from main import create_app
 from dbHelperTest import dbHelperTest
 from modelHelper import modelHelper
 
-# create questionAnswerTest.db DB connection
+#Create the test
 @pytest.fixture
 def app():
     app = create_app()
@@ -26,11 +26,13 @@ def test_Welcome(client):
     print(response)
     assert 200 == response.status_code
 
+
 # Test Case for app route @app.route('/models', =['GET', 'PUT','DELETE'])
 def test_getModels_GET(client,mocker):
     mocker.patch('modelHelper.getModelList()',{'name':'Shipra'})
     response = client.get('/models')
     assert response is not None
+
 
 def test_getModels_PUT(client):
     modelData = {"name": "bert-tiny",
@@ -38,6 +40,7 @@ def test_getModels_PUT(client):
                  "model": "mrm8488/bert-tiny-5-finetuned-squadv2"}
     reponse = client.put('/models', data=modelData)
     assert reponse is not None
+
 
 def test_getModels_DELETE(client):
     modelName = "saSS"
@@ -47,6 +50,7 @@ def test_getModels_DELETE(client):
     # Test Case for app route @app.route('/answer', methods=['POST'])
     # Test case for @app.route('/answer', methods=['GET'])
     # Test case for
+
 
 if __name__ == '__main__':
     dbHelperTest = dbHelperTest()
