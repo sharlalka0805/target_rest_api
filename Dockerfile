@@ -8,6 +8,8 @@ RUN mkdir -p /usr/src/app
 # Setting Home Directory for containers
 WORKDIR /usr/src/app
 
+#
+ENV PATH=/usr/lib/postgresql/X.Y/bin/:$PATH
 
 # Installing python dependencies
 COPY requirements.txt .
