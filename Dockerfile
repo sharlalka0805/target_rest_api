@@ -8,11 +8,14 @@ RUN mkdir -p /usr/src/app
 # Setting Home Directory for containers
 WORKDIR /usr/src/app
 
-# install psycopg2 dependencies
-#RUN apk update
-#RUN apk add postgresql-dev gcc python3-dev musl-dev
+#RUN EXPORT PATH=/usr/lib/postgresql/X.Y/bin/:$PATH
+#ENV POSTGIS_VERSION 3.1.1
 
-RUN EXPORT PATH=/usr/lib/postgresql/X.Y/bin/:$PATH
+RUN apk update \
+  && apk add --virtual build-deps gcc python3-dev musl-dev \
+  && apk add postgresql-dev \
+  && pip install psycopg2 \
+  && apk del build-deps
 
 # Installing python dependencies
 COPY requirements.txt .
