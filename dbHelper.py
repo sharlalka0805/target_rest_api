@@ -1,6 +1,5 @@
 import os
 import stat
-
 import psycopg2
 
 class dbHelper:
