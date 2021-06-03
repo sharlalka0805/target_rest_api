@@ -84,6 +84,9 @@ class modelHelper:
         # Fetch the question_answer list
         data = self.db_helper.getRecentlyAnsweredQuestionsList(modelName,startTime,endTime)
 
+        if len(data) == 0:
+            data = self.db_helper.getDBLogs()
+
         if len(data) > 1:
             listOfQuestionAnswer = []
             for row in data:
