@@ -24,7 +24,7 @@ class dbHelper:
 
         sslrootcert = "sslrootcert=/server-ca.pem"
 
-        
+
         sslcert_var = os.environ.get('PG_SSLCERT')
         sslcert_var = sslcert_var.replace('@', '=')
         file = open("/client-cert.pem", "w")
@@ -57,6 +57,7 @@ class dbHelper:
             password,
             dbname
         ])
+
 
         # Connect to your postgres DB
         self.con = psycopg2.connect(db_connect_string)
