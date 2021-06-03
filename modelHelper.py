@@ -55,8 +55,8 @@ class modelHelper:
              #              ,'USER'
               #             ,int(datetime.utcnow().timestamp())))
 
-            # Return response json
-            return json.dumps(question_answer, default=lambda x: x.__dict__)
+            # Return response json return json.dumps(question_answer, default=lambda x: x.__dict__)
+            return action_details
         else:
             # Return response - In case model does not exist
             return self.errorResponseMessage(ResponseErrorMessage.DATA_NOT_FOUND.value)
@@ -75,7 +75,7 @@ class modelHelper:
             for row in data:
                 print(row[0], row[1], row[2])
                 listOfModels.append({'name':row[0],'tokenizer':row[1],'model':row[2]})
-            return json.dumps(listOfModels)
+            return listOfModels
 
     # Method to fetch the list of recently answered questions
     def getRecentlyAnsweredQuestions(self,modelName,startTime,endTime):
@@ -92,8 +92,8 @@ class modelHelper:
 
             #Add Log
 
-            # Return response JSON
-            return json.dumps(listOfQuestionAnswer, default=lambda x: x.__dict__)
+            # Return response JSON json.dumps(listOfQuestionAnswer, default=lambda x: x.__dict__)
+            return listOfQuestionAnswer
         else:
             # Return error JSON
             return self.errorResponseMessage(ResponseErrorMessage.DATA_NOT_FOUND.value)
@@ -168,22 +168,6 @@ class modelHelper:
                 pass
 
 
-    def getReport(self):
-        print('Inside modelHelper.getReport')
-        data = self.db_helper.getDBLogs()
-
-        print(type(data))
-        print('Data fetched == ' , data)
-
-        if len(data) != 0:
-            dbLogList = []
-            for row in data:
-                dbLogList.append(appLogger(row[0],row[1],row[2],row[3],row[4]))
-                print('before json dumps')
-                return json.dumps(dbLogList, default=lambda x: x.__dict__)
-        else:
-            return self.errorResponseMessage(ResponseErrorMessage.NO_LOGS_FOUND.value)
-
     def errorResponseMessage(self, message):
         print('Inside errorResponseMessage message = ',message)
         success = False
@@ -195,5 +179,6 @@ class modelHelper:
             }
         }
 
-        return json.dumps(response)
+        #return json.dumps(response)
+        return response
 
