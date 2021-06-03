@@ -12,7 +12,7 @@ WORKDIR /usr/src/app
 ENV PATH=/usr/lib/postgresql/X.Y/bin/:$PATH
 
 #RUN apt-get install libpq-dev python-dev
-RUN apt-get install postgresql postgresql-client
+#RUN apt-get install postgresql postgresql-client
 
 # Installing python dependencies
 COPY requirements.txt .
