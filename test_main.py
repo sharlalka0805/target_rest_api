@@ -1,13 +1,16 @@
 import pytest
-from pytest_mock import mocker
 from main import create_app
-from dbHelperTest import dbHelperTest
 from modelHelper import modelHelper
+from dbHelperTest import dbHelperTest
+from pytest_mock import mocker
+from mock import patch,Mock
+
 
 #Create the test
 @pytest.fixture
 def app():
     app = create_app()
+
     app.config["TESTING"] = True
 
     # create the database and load questionAnswerTest.db data
@@ -17,7 +20,6 @@ def app():
 
 @pytest.fixture
 def client(app):
-    """A questionAnswerTest.db client for the app."""
     return app.test_client()
 
 # Test Case for app route @app.route('/')
@@ -28,8 +30,7 @@ def test_Welcome(client):
 
 
 # Test Case for app route @app.route('/models', =['GET', 'PUT','DELETE'])
-def test_getModels_GET(client,mocker):
-    mocker.patch('modelHelper.getModelList()',{'name':'Shipra'})
+def test_getModels_GET(client):
     response = client.get('/models')
     assert response is not None
 
@@ -47,12 +48,32 @@ def test_getModels_DELETE(client):
     response = client.delete('/models?model=' + modelName)
     assert response is not None
 
-    # Test Case for app route @app.route('/answer', methods=['POST'])
-    # Test case for @app.route('/answer', methods=['GET'])
-    # Test case for
+
+# Test Case for app route @app.route('/answer', methods=['POST'])
+def test_Answer_Post(client):
+    modelName = "saSS"
+    modelData = {"name": "bert-tiny",
+                 "tokenizer": "mrm8488/bert-tiny-5-finetuned-squadv2",
+                 "model": "mrm8488/bert-tiny-5-finetuned-squadv2"}
+    response = client.post('/answer?model=' + modelName,data = modelData)
+    assert response is not None
+
+
+# Test case for @app.route('/answer', methods=['GET'])
+def test_Answer_Post(client):
+    modelName = "saSS"
+    response = client.get('/answer?model=' + modelName)
+    assert response is not None
+
 
 
 if __name__ == '__main__':
-    dbHelperTest = dbHelperTest()
-    modelHelper = modelHelper()
-    message = dbHelperTest.createDatabase()
+    print('Inside main')
+    dbhelperTest = dbHelperTest()
+    message = dbhelperTest.createDatabase()
+    print(message)
+
+
+
+
+
