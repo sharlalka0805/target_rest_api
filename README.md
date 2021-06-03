@@ -7,6 +7,9 @@ https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/
 
 # Dependencies </br>
 
+### Flask: 
+We used flask to produce the rest API
+
 ### Torch: 
 We used torch as a dependency for transformers
 
