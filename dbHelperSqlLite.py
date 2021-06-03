@@ -1,3 +1,4 @@
+import sqlite3
 import sqlite3 as sql
 
 class dbHelper:
@@ -9,23 +10,29 @@ class dbHelper:
                 cur = con.cursor()
                 # Create the basic tables
                 # AppLogger
-                cur.execute(""" CREATE TABLE IF NOT EXISTS APP_LOGGER (model_name text
-                                         ,action_type text
-                                         ,action_details text
-                                         ,created_by text
-                                         ,created_time integer """)
+                cur.execute(""" CREATE TABLE IF NOT EXISTS APP_LOGGER
+                                                                    (model_name text
+                                                                     ,action_type text
+                                                                     ,action_details text
+                                                                     ,created_by text
+                                                                     ,created_time integer) """)
 
                 # Models
                 cur.execute(""" CREATE TABLE IF NOT EXISTS NLP_Models (name text,tokenizer text,model text)""")
 
                 # QuestionAnswer
                 cur.execute(
-                    """CREATE TABLE IF NOT EXISTS Question_Answer (modelName text,question text,context text,
-                    answer text,createdDate integer)""")
+                    """CREATE TABLE IF NOT EXISTS Question_Answer
+                                                             (modelName text
+                                                             ,question text
+                                                             ,context text
+                                                             ,answer text
+                                                             ,createdDate integer)""")
 
                 con.commit()
                 return "Initial DB setup completed"
-        except:
+        except sqlite3.Error as er:
+            print(er)
             con.rollback()
             return "Exception occurred while initial DB setup"
         finally:
@@ -132,15 +139,16 @@ class dbHelper:
                 cur = con.cursor()
 
                 cur.execute(
-                    "INSERT INTO Question_Answer VALUES (?,?,?,?,?)",
-                    {'modelName': questionAnswer.modelName
+                    "INSERT INTO Question_Answer VALUES (:modelName,:question,:context,:answer,:timestamp)",
+                        {'modelName': questionAnswer.modelName
                         , 'question': questionAnswer.question
                         , 'context': questionAnswer.context
                         , 'answer': questionAnswer.answer
                         , 'timestamp': questionAnswer.timestamp})
                 print('Inside dbHelper.getRecentlyAnsweredQuestionsList ', 'Data saved successfully')
                 return "Data saved successfully"
-        except:
+        except sqlite3.Error as er:
+            print(er)
             con.rollback()
             return "Exception occured while saving question answer data"
         finally:
