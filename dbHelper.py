@@ -10,10 +10,10 @@ class dbHelper:
 
         # Format DB connection information
         sslmode = "sslmode=verify-ca"
-        hostaddr = " hostaddr={}".format(os.environ.get('PG_HOST'))
-        user = " user=postgres"
-        password = " password={}".format(os.environ.get('PG_PASSWORD'))
-        dbname = " dbname=mgmt590"
+        hostaddr = "hostaddr={}".format(os.environ.get('PG_HOST'))
+        user = "user=postgres"
+        password = "password={}".format(os.environ.get('PG_PASSWORD'))
+        dbname = "dbname=mgmt590"
 
         sslrootcert_var = os.environ.get('PG_SSLROOTCERT')
         sslrootcert_var = sslrootcert_var.replace('@', '=')
