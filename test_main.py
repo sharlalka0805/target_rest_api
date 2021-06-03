@@ -66,7 +66,6 @@ def test_Answer_Post(client):
     assert response is not None
 
 
-
 if __name__ == '__main__':
     print('Inside main')
     dbhelperTest = dbHelperTest()
