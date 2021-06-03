@@ -18,7 +18,7 @@ We used this dependency for answering question.
 
 You need to install all the dependencies avaailable in requirements.txt
 
-# Steps to build and run the API locally via doicker or FLask</br>
+# Steps to build and run the API locally via Docker or Flask</br>
 
 1. To build the API locally , install FLASK,Tensorflow,Pytorch</br>
 2. Clone the above githib code to your local machine</br>
