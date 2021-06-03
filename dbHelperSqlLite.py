@@ -3,7 +3,6 @@ import sqlite3 as sql
 
 class dbHelper:
 
-
     def createDatabase(self):
         try:
             with sql.connect("questionAnswer.db") as con:
@@ -27,7 +26,7 @@ class dbHelper:
                                                              ,question text
                                                              ,context text
                                                              ,answer text
-                                                             ,createdDate integer)""")
+                                                             ,createdDate integer) """)
 
                 con.commit()
                 return "Initial DB setup completed"
