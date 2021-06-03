@@ -32,7 +32,7 @@ class dbHelper:
         os.chmod("/client-cert.pem", stat.S_IRUSR)
         os.chmod("/client-cert.pem", stat.S_IWUSR)
 
-        sslcert = " sslcert=/client-cert.pem"
+        sslcert = "sslcert=/client-cert.pem"
 
         sslkey_var = os.environ.get('PG_SSLKEY')
         sslkey_var = sslkey_var.replace('@', '=')
@@ -42,7 +42,7 @@ class dbHelper:
         os.chmod("/client-key.pem", stat.S_IRUSR)
         os.chmod("/client-key.pem", stat.S_IWUSR)
 
-        sslkey = " sslkey=/client-key.pem"
+        sslkey = "sslkey=/client-key.pem"
 
         # Construct database connect string
         db_connect_string = " ".join([
