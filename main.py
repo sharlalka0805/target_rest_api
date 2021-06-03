@@ -32,7 +32,7 @@ def create_app():
                     data = modelHelper.getModelList()
 
                     if data is not None:
-                        return data
+                        return jsonify(data)
                     else:
                         return modelHelper.errorResponseMessage(ResponseErrorMessage.DATA_NOT_FOUND.value)
                 else:
@@ -48,7 +48,7 @@ def create_app():
                         data = modelHelper.getModelList()
 
                         if data is not None:
-                            return data
+                            return jsonify(data)
                         else:
                             return modelHelper.errorResponseMessage(ResponseErrorMessage.DATA_NOT_FOUND.value)
                     else:
@@ -60,7 +60,7 @@ def create_app():
 
                 data = modelHelper.getModelList()
                 if data is not None:
-                    return data
+                    return jsonify(data)
                 else:
                     return modelHelper.errorResponseMessage(ResponseErrorMessage.DATA_NOT_FOUND.value)
 
@@ -80,17 +80,15 @@ def create_app():
             if requestMessage is None:
                 return modelHelper.errorResponseMessage(ResponseErrorMessage.Question_Not_Asked.value)
 
-
             # Call the method to answer the questions
             answer = modelHelper.findAnswer(modelName, requestMessage)
 
-            return answer
+            return jsonify(answer)
 
     # List recently answered questions
     @app.route('/answer', methods=['GET'])
     def listAnswers(modelName=None, startTime=None, endTime=None):
 
-            # TODO:Check the optional and required conditions for the three parameters
             modelName = request.args.get('model')
 
             if modelName == '':
@@ -110,14 +108,9 @@ def create_app():
             recentlyAnsweredQuestionsList = modelHelper.getRecentlyAnsweredQuestions(modelName, startTime, endTime)
 
             if recentlyAnsweredQuestionsList is not None:
-                return recentlyAnsweredQuestionsList
+                return jsonify(recentlyAnsweredQuestionsList)
             else:
                 return modelHelper.errorResponseMessage(ResponseErrorMessage.ERORR_OCCUREED.value)
-
-    @app.route('/report', methods=['GET'])
-    def generateReport():
-        print('Inside generateReport .. ')
-        return modelHelper.getReport()
 
 
     # Exception Handler
