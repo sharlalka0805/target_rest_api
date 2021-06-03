@@ -14,6 +14,7 @@ class dbHelper:
         password = "password={}".format(os.environ.get('PG_PASSWORD'))
         dbname = "dbname=postgres"
 
+
         sslrootcert_var = os.environ.get('PG_SSLROOTCERT')
         sslrootcert_var = sslrootcert_var.replace('@', '=')
         file = open("/server-ca.pem", "w")
