@@ -32,6 +32,7 @@ class dbHelper:
         os.chmod("/client-cert.pem", stat.S_IRUSR)
         os.chmod("/client-cert.pem", stat.S_IWUSR)
 
+
         sslcert = "sslcert=/client-cert.pem"
 
         sslkey_var = os.environ.get('PG_SSLKEY')
