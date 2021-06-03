@@ -11,7 +11,7 @@ WORKDIR /usr/src/app
 #
 ENV PATH=/usr/lib/postgresql/X.Y/bin/:$PATH
 
-RUN sudo apt-get install libpq-dev python-dev
+RUN apt-get install libpq-dev python-dev
 
 # Installing python dependencies
 COPY requirements.txt .
