@@ -8,13 +8,13 @@ class dbHelper:
 
         # Format DB connection information
         sslmode = "sslmode=verify-ca"
-        sslrootcert = "sslrootcert={}".format(os.environ.get('PG_SSLROOTCERT'))
-        sslcert = "sslcert={}".format(os.environ.get('PG_SSLCERT'))
-        sslkey = "sslkey={}".format(os.environ.get('PG_SSLKEY'))
-        hostaddr = "hostaddr={}".format(os.environ.get('PG_HOST'))
-        user = "user=postgres"
-        password = "password={}".format(os.environ.get('PG_PASSWORD'))
-        dbname = "dbname=mgmt590"
+        sslrootcert = " sslrootcert={}".format(os.environ.get('PG_SSLROOTCERT'))
+        sslcert = " sslcert={}".format(os.environ.get('PG_SSLCERT'))
+        sslkey = " sslkey={}".format(os.environ.get('PG_SSLKEY'))
+        hostaddr = " hostaddr={}".format(os.environ.get('PG_HOST'))
+        user = " user=postgres"
+        password = " password={}".format(os.environ.get('PG_PASSWORD'))
+        dbname = " dbname=mgmt590"
 
         # Construct database connect string
         db_connect_string = " ".join([
