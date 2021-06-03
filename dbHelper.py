@@ -7,6 +7,7 @@ class dbHelper:
     def __init__(self):
         print('Inside dbhelper init')
 
+
         # Format DB connection information
         sslmode = "sslmode=verify-ca"
         hostaddr = " hostaddr={}".format(os.environ.get('PG_HOST'))
