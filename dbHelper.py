@@ -32,7 +32,6 @@ class dbHelper:
         os.chmod("/client-cert.pem", stat.S_IRUSR)
         os.chmod("/client-cert.pem", stat.S_IWUSR)
 
-
         sslcert = "sslcert=/client-cert.pem"
 
         sslkey_var = os.environ.get('PG_SSLKEY')
@@ -70,7 +69,7 @@ class dbHelper:
                                          ,action_type text
                                          ,action_details text
                                          ,created_by text
-                                         ,created_time integer """)
+                                         ,created_time integer )""")
 
                 # Models
                 cur.execute(""" CREATE TABLE IF NOT EXISTS NLP_Models (name text,tokenizer text,model text)""")
