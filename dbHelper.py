@@ -44,7 +44,6 @@ class dbHelper:
 
         sslkey = " sslkey=/client-key.pem"
 
-
         # Construct database connect string
         db_connect_string = " ".join([
             sslmode,
