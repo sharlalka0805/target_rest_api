@@ -1,8 +1,8 @@
 import pytest
+from pytest_mock import mocker
 from main import create_app
 from dbHelperTest import dbHelperTest
-
-
+from modelHelper import modelHelper
 
 # create questionAnswerTest.db DB connection
 @pytest.fixture
@@ -20,19 +20,17 @@ def client(app):
     """A questionAnswerTest.db client for the app."""
     return app.test_client()
 
-
 # Test Case for app route @app.route('/')
 def test_Welcome(client):
     response = client.get("/")
     print(response)
     assert 200 == response.status_code
 
-
 # Test Case for app route @app.route('/models', =['GET', 'PUT','DELETE'])
-def test_getModels_GET(client):
+def test_getModels_GET(client,mocker):
+    mocker.patch('modelHelper.getModelList()',{'name':'Shipra'})
     response = client.get('/models')
     assert response is not None
-
 
 def test_getModels_PUT(client):
     modelData = {"name": "bert-tiny",
@@ -40,7 +38,6 @@ def test_getModels_PUT(client):
                  "model": "mrm8488/bert-tiny-5-finetuned-squadv2"}
     reponse = client.put('/models', data=modelData)
     assert reponse is not None
-
 
 def test_getModels_DELETE(client):
     modelName = "saSS"
@@ -51,7 +48,7 @@ def test_getModels_DELETE(client):
     # Test case for @app.route('/answer', methods=['GET'])
     # Test case for
 
-
 if __name__ == '__main__':
     dbHelperTest = dbHelperTest()
+    modelHelper = modelHelper()
     message = dbHelperTest.createDatabase()
