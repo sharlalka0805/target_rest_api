@@ -12,6 +12,8 @@ WORKDIR /usr/src/app
 #RUN apk update
 #RUN apk add postgresql-dev gcc python3-dev musl-dev
 
+RUN EXPORT PATH=/usr/lib/postgresql/X.Y/bin/:$PATH
+
 # Installing python dependencies
 COPY requirements.txt .
 RUN pip install  -r requirements.txt
