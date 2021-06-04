@@ -118,6 +118,7 @@ class dbHelper:
 
     def listModels(self):
         try:
+            cur = self.con.cursor()
             select_query = "SELECT * FROM NLP_Models"
             cur = self.con.execute(select_query)
             rows = cur.fetchall()
