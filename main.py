@@ -41,7 +41,7 @@ sslkey = "sslkey=/client-key.pem"
 hostaddr = "hostaddr={}".format(os.environ.get('PG_HOST'))
 user = "user=postgres"
 password = "password={}".format(os.environ.get('PG_PASSWORD'))
-dbname = "dbname=mgmt590"
+dbname = "dbname=postgres"
 
 # Construct database connect string
 db_connect_string = " ".join([
