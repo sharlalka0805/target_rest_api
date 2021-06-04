@@ -1,10 +1,6 @@
 import pytest
 from main import create_app
-from modelHelper import modelHelper
 from dbHelperTest import dbHelperTest
-from pytest_mock import mocker
-from mock import patch,Mock
-
 
 #Create the test
 @pytest.fixture
@@ -44,6 +40,7 @@ def test_getModels_PUT(client):
 
 
 def test_getModels_DELETE(client):
+
     modelName = "saSS"
     response = client.delete('/models?model=' + modelName)
     assert response is not None
