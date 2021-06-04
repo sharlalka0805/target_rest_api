@@ -33,7 +33,7 @@ jobs:
 
     - name: Test Container
       run: |-
-        docker run -w /app gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} pytest -v
+        docker run -w /usr/src/app gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }} pytest -v
 
     - name: Deploy to Cloud Run
       id: deploy
