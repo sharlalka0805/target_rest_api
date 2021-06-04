@@ -88,7 +88,7 @@ class dbHelper:
                 self.con.commit()
                 return "Initial DB setup completed"
         except Exception as err:
-            print_psycopg2_exception(err)
+            print(err)
             self.con.rollback()
             return "Exception occurred while initial DB setup"
         finally:
@@ -109,7 +109,7 @@ class dbHelper:
             self.con.commit()
             return "Initial DB setup completed"
         except Exception as err:
-            print_psycopg2_exception(err)
+            print(err)
             self.con.rollback()
             return "Exception occurred while initial DB inserts"
         finally:
@@ -122,7 +122,7 @@ class dbHelper:
             cur = self.con.execute(select_query)
             rows = cur.fetchall()
         except Exception as err:
-            print_psycopg2_exception(err)
+            print(err)
             self.con.rollback()
             return "Exception occurred while fetching the list of models"
         finally:
@@ -139,7 +139,7 @@ class dbHelper:
             self.con.commit()
             return "Model added successfully"
         except Exception as err:
-            print_psycopg2_exception(err)
+            print(err)
             self.con.rollback()
             return "Exception occured while trying to add model"
         finally:
@@ -155,7 +155,7 @@ class dbHelper:
             print('Inside dbHelper.deleteModel for model = ', modelName, "Model deleted successfully")
             return "Model deleted successfully"
         except Exception as err:
-            print_psycopg2_exception(err)
+            print(err)
             self.con.rollback()
             return "Exception occured while trying to delete model for model = " + modelName
         finally:
@@ -180,7 +180,7 @@ class dbHelper:
             rows = cur.fetchall()
             return rows
         except Exception as err:
-            print_psycopg2_exception(err)
+            print(err)
             self.con.rollback()
             return "Exception occured while trying to fetch the list of recently answered questions"
         finally:
@@ -205,7 +205,7 @@ class dbHelper:
             print('Inside dbHelper.getRecentlyAnsweredQuestionsList ', 'Data saved successfully')
             return "Data saved successfully"
         except Exception as err:
-            print_psycopg2_exception(err)
+            print(err)
             self.con.rollback()
             return "Exception occured while saving question answer data"
         finally:
@@ -228,7 +228,7 @@ class dbHelper:
             print('Inside dbHelper.saveDBLog ', 'Data saved successfully')
             return "Data saved successfully"
         except Exception as err:
-            print_psycopg2_exception(err)
+            print(err)
             self.con.rollback()
             return "Exception occured while saving question answer data"
         finally:
@@ -242,7 +242,7 @@ class dbHelper:
             rows = cur.fetchall()
             return rows
         except Exception as err:
-            print_psycopg2_exception(err)
+            print(err)
             self.con.rollback()
             return "Exception occurred while fetching the list of models"
         finally:
@@ -261,21 +261,3 @@ class dbHelper:
         finally:
             self.con.commit()
 
-# define a function that handles and parses psycopg2 exceptions
-def print_psycopg2_exception(err):
-    # get details about the exception
-    err_type, err_obj, traceback = sys.exc_info()
-
-    # get the line number when exception occured
-    line_num = traceback.tb_lineno
-
-    # print the connect() error
-    print("\npsycopg2 ERROR:", err, "on line number:", line_num)
-    print("psycopg2 traceback:", traceback, "-- type:", err_type)
-
-    # psycopg2 extensions.Diagnostics object attribute
-    print("\nextensions.Diagnostics:", err.diag)
-
-    # print the pgcode and pgerror exceptions
-    print("pgerror:", err.pgerror)
-    print("pgcode:", err.pgcode, "\n")
