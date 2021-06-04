@@ -140,6 +140,9 @@ if __name__ == '__main__':
     message = dbHelper.createDatabase()
     print(message)
 
+    message_2 = dbHelper.insertInitialData()
+    print(message_2)
+
     # Create the app
     app = create_app()
 
