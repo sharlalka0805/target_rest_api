@@ -99,7 +99,6 @@ class dbHelper:
             print('Inside insertintialdata')
 
             cur = self.con.cursor()
-                # Create the basic tables
 
             cur.execute(""" INSERT INTO NLP_Models VALUES('bert-base-multilingual-uncased','bert-base-multilingual-uncased','bert-base-multilingual-uncased' ) """)
             cur.execute(
@@ -269,6 +268,7 @@ def print_psycopg2_exception(err):
 
     # get the line number when exception occured
     line_num = traceback.tb_lineno
+
     # print the connect() error
     print("\npsycopg2 ERROR:", err, "on line number:", line_num)
     print("psycopg2 traceback:", traceback, "-- type:", err_type)
