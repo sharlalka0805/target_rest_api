@@ -1,75 +1,42 @@
 import pytest
 from main import create_app
-from dbHelperTest import dbHelperTest
+import time
 
-#Create the test
+
+timestamp = int(time.time())
+
 @pytest.fixture
-def app():
+def client():
     app = create_app()
-
     app.config["TESTING"] = True
-
-    # create the database and load questionAnswerTest.db data
-    with app.app_context():
-        yield app
+    with app.test_client() as client:
+        yield client
 
 
-@pytest.fixture
-def client(app):
-    return app.test_client()
-
-# Test Case for app route @app.route('/')
-def test_Welcome(client):
-    response = client.get("/")
-    print(response)
-    assert 200 == response.status_code
+def test_health(client):
+    r = client.get("/")
+    assert 200 == r.status_code
 
 
-# Test Case for app route @app.route('/models', =['GET', 'PUT','DELETE'])
-def test_getModels_GET(client):
-    response = client.get('/models')
-    assert response is not None
+def test_addModel(client):
+    print("Testing Add Model functionality")
+    # Test add a model functionality
+    payload = {
+        "name": "distilled-ber",
+        "tokenizer": "distilbert-base-uncased-distilled-squad",
+        "model": "distilbert-base-uncased-distilled-squad"
+    }
+    r = client.put("/models", json=payload)
+    assert 200 == r.status_code
 
 
-def test_getModels_PUT(client):
-    modelData = {"name": "bert-tiny",
-                 "tokenizer": "mrm8488/bert-tiny-5-finetuned-squadv2",
-                 "model": "mrm8488/bert-tiny-5-finetuned-squadv2"}
-    reponse = client.put('/models', data=modelData)
-    assert reponse is not None
+def test_getModel(client):
+    # test /models GET
+    r = client.get("/models")
+    assert 200 == r.status_code
 
 
-def test_getModels_DELETE(client):
-
-    modelName = "saSS"
-    response = client.delete('/models?model=' + modelName)
-    assert response is not None
-
-
-# Test Case for app route @app.route('/answer', methods=['POST'])
-def test_Answer_Post(client):
-    modelName = "saSS"
-    modelData = {"name": "bert-tiny",
-                 "tokenizer": "mrm8488/bert-tiny-5-finetuned-squadv2",
-                 "model": "mrm8488/bert-tiny-5-finetuned-squadv2"}
-    response = client.post('/answer?model=' + modelName,data = modelData)
-    assert response is not None
-
-
-# Test case for @app.route('/answer', methods=['GET'])
-def test_Answer_Post(client):
-    modelName = "saSS"
-    response = client.get('/answer?model=' + modelName)
-    assert response is not None
-
-
-if __name__ == '__main__':
-    print('Inside main')
-    dbhelperTest = dbHelperTest()
-    message = dbhelperTest.createDatabase()
-    print(message)
-
-
-
-
-
+def test_deleteModel(client):
+    # Test /models DELETE
+    r = client.delete("/models?model=bert-tiny")
+    assert 200 == r.status_code
