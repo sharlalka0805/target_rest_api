@@ -92,7 +92,7 @@ class dbHelper:
             self.con.rollback()
             return "Exception occurred while initial DB setup"
         finally:
-            self.con.close()
+            self.con.commit()
 
     def insertInitialData(self):
         try:
@@ -101,12 +101,11 @@ class dbHelper:
             cur = self.con.cursor()
                 # Create the basic tables
 
-            cur.execute(""" INSERT INTO NLP_Models VALUES(name,tokenizer,model) 
-                                SELECT 'bert-base-multilingual-uncased'
-                                        ,'bert-base-multilingual-uncased'
-                                        ,'bert-base-multilingual-uncased' 
-                                WHERE NOT EXISTS(
-                                SELECT 1 FROM NLP_Models WHERE name = 'bert-base-multilingual-uncased'); """)
+            cur.execute(""" INSERT INTO NLP_Models VALUES('bert-base-multilingual-uncased','bert-base-multilingual-uncased','bert-base-multilingual-uncased' ) """)
+            cur.execute(
+                """ INSERT INTO NLP_Models VALUES('distilled-bert','distilbert-base-uncased-distilled-squad','distilbert-base-uncased-distilled-squad' ) """)
+            cur.execute(
+                """ INSERT INTO NLP_Models VALUES('deepset-roberta','deepset/roberta-base-squad2','deepset/roberta-base-squad2' ) """)
 
             self.con.commit()
             return "Initial DB setup completed"
@@ -115,7 +114,7 @@ class dbHelper:
             self.con.rollback()
             return "Exception occurred while initial DB inserts"
         finally:
-            self.con.close()
+            self.con.commit()
 
 
     def listModels(self):
@@ -128,7 +127,7 @@ class dbHelper:
             self.con.rollback()
             return "Exception occurred while fetching the list of models"
         finally:
-            self.con.close()
+            self.con.commit()
         return rows
 
     def addModel(self, name, tokenizer, model):
@@ -145,7 +144,7 @@ class dbHelper:
             self.con.rollback()
             return "Exception occured while trying to add model"
         finally:
-            self.con.close()
+            self.con.commit()
 
     def deleteModel(self, modelName):
         try:
@@ -161,7 +160,7 @@ class dbHelper:
             self.con.rollback()
             return "Exception occured while trying to delete model for model = " + modelName
         finally:
-            self.con.close()
+            self.con.commit()
 
     def getRecentlyAnsweredQuestionsList(self, modelName, startTime, endTime):
         try:
@@ -186,7 +185,7 @@ class dbHelper:
             self.con.rollback()
             return "Exception occured while trying to fetch the list of recently answered questions"
         finally:
-            self.con.close()
+            self.con.commit()
 
     def saveRecentlyAnsweredQuestion(self, questionAnswer):
         try:
@@ -211,7 +210,7 @@ class dbHelper:
             self.con.rollback()
             return "Exception occured while saving question answer data"
         finally:
-            self.con.close()
+            self.con.commit()
 
     # Create method to store all the logs
     def saveDBLog(self, appLogger):
@@ -234,7 +233,7 @@ class dbHelper:
             self.con.rollback()
             return "Exception occured while saving question answer data"
         finally:
-            self.con.close()
+            self.con.commit()
 
     # Method to get mode details
     def getModelDetails(self, modelName):
@@ -248,7 +247,7 @@ class dbHelper:
             self.con.rollback()
             return "Exception occurred while fetching the list of models"
         finally:
-            self.con.close()
+            self.con.commit()
 
 
     def getDBLogs(self):
@@ -261,7 +260,7 @@ class dbHelper:
             self.con.rollback()
             return "Exception occurred while fetching the list of models"
         finally:
-            self.con.close()
+            self.con.commit()
 
 # define a function that handles and parses psycopg2 exceptions
 def print_psycopg2_exception(err):
