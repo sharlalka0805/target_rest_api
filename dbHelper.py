@@ -239,6 +239,7 @@ class dbHelper:
     def getModelDetails(self, modelName):
         print('Inside dbHelper.getModelDetails for modelName = ', modelName)
         try:
+            cur = self.con.cursor()
             cur = self.con.execute("SELECT * FROM NLP_Models WHERE model = :modelName", {'modelName': modelName})
             rows = cur.fetchall()
             return rows
@@ -252,6 +253,7 @@ class dbHelper:
 
     def getDBLogs(self):
         try:
+            cur = self.con.cursor()
             select_query = "SELECT * FROM Question_Answer order by createdDate desc"
             cur = self.con.execute(select_query)
             rows = cur.fetchall()
