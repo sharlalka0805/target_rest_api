@@ -1,43 +1,20 @@
-import pandas as pd
 from flask import Flask
 from flask import request
 from flask import jsonify
 import time
 from transformers import pipeline
-import psycopg2
+import init as _init
 import os
-import stat
 
-
-models ={}
-
-# Initialize our default model.
-models = {
-    "default": "distilled-bert",
-    "models": [
-        {
-            "name": "distilled-bert",
-            "tokenizer": "distilbert-base-uncased-distilled-squad",
-            "model": "distilbert-base-uncased-distilled-squad",
-            "pipeline": pipeline('question-answering',
-                                 model="distilbert-base-uncased-distilled-squad",
-                                 tokenizer="distilbert-base-uncased-distilled-squad")
-        }
-    ]
-}
+# Define Global Variables
+models = {}
+environment = ''
+con = ''
 
 # Create my flask app
 def create_app():
 
     app = Flask(__name__)
-
-    def convert_to_dict(df):
-        result = []
-        for index, row in df.iterrows():
-            # result[index] = row.to_json()
-            result.append(dict(row))
-        return result
-
 
     @app.route("/")
     def hello_world():
@@ -49,6 +26,7 @@ def create_app():
     # Face model.
     @app.route("/answer", methods=['POST'])
     def answer():
+
         # Get the request body data
         data = request.json
 
@@ -63,7 +41,7 @@ def create_app():
         timestamp = int(time.time())
 
         # Insert our answer in the database
-        con = psycopg2.connect(db_connect_string)
+        con = _init.init_db(environment)
         cur = con.cursor()
         sql = "INSERT INTO answers VALUES ('{question}','{context}','{model}','{answer}',{timestamp})"
         cur.execute(sql.format(
@@ -86,11 +64,10 @@ def create_app():
 
         return jsonify(out)
 
-
-
     # List historical answers from the database.
     @app.route("/answer", methods=['GET'])
     def list_answer():
+
         # Validate timestamps
         if request.args.get('start') == None or request.args.get('end') == None:
             return "Query timestamps not provided", 400
@@ -105,7 +82,7 @@ def create_app():
             sql_rev = sql.format(start=request.args.get('start'), end=request.args.get('end'))
 
         # Query the database
-        con = psycopg2.connect(db_connect_string)
+        con = _init.init_db(environment)
         cur = con.cursor()
         out = []
         for row in cur.execute(sql_rev):
@@ -119,7 +96,6 @@ def create_app():
         con.close()
 
         return jsonify(out)
-
 
     # List models currently available for inference
     @app.route("/models", methods=['GET'])
@@ -141,6 +117,10 @@ def create_app():
     def add_model():
         # Get the request body data
         data = request.json
+
+        if validate_model(data['name']):
+            return "Model to be added already present", 400
+
 
         # Load the provided model
         if not validate_model(data['name']):
@@ -180,6 +160,9 @@ def create_app():
         if request.args.get('model') == models['default']:
             return "Can't delete default model", 400
 
+        if not validate_model(request.args.get('model')):
+            return "Model to be deleted not present", 400
+
         # Load the provided model
         models_rev = []
         for m in models['models']:
@@ -212,7 +195,6 @@ def create_app():
 
         return model_name in model_names
 
-
     # Answer a question with a given model name
     def answer_question(model_name, question, context):
         # Get the right model pipeline
@@ -230,68 +212,32 @@ def create_app():
         answer = hg_comp({'question': question, 'context': context})['answer']
 
         return answer, model_name
+
+        # Exception Handler
+    @app.errorhandler(Exception)
+    def handle_exception(error):
+            message = [str(x) for x in error.args]
+            success = False
+            response = {
+                'success': success,
+                'error': {
+                    'type': error.__class__.__name__,
+                    'message': message
+                }
+            }
+
+            return jsonify(response)
+
     return app
+
 
 # Run main by default if running "python answer.py"
 if __name__ == '__main__':
 
+    environment = 'LOCAL'
+    models = _init.getInitialModel()
+
     app = create_app()
-
-    # Format DB connection information
-    sslmode = "sslmode=verify-ca"
-
-    # Format DB connection information
-    sslrootcert_var = os.environ.get('PG_SSLROOTCERT')
-    sslrootcert_var = sslrootcert_var.replace('@', '=')
-    file = open("/server-ca.pem", "w")
-    file.write(sslrootcert_var)
-    file.close()
-    os.chmod("/server-ca.pem", stat.S_IRUSR)
-    os.chmod("/server-ca.pem", stat.S_IWUSR)
-    sslrootcert = "sslrootcert=/server-ca.pem"
-
-    sslcert_var = os.environ.get('PG_SSLCERT')
-    sslcert_var = sslcert_var.replace('@', '=')
-    file = open("/client-cert.pem", "w")
-    file.write(sslcert_var)
-    file.close()
-    os.chmod("/client-cert.pem", stat.S_IRUSR)
-    os.chmod("/client-cert.pem", stat.S_IWUSR)
-    sslcert = "sslcert=/client-cert.pem"
-
-    sslkey_var = os.environ.get('PG_SSLKEY')
-    sslkey_var = sslkey_var.replace('@', '=')
-    file = open("/client-key.pem", "w")
-    file.write(sslkey_var)
-    file.close()
-    os.chmod("/client-key.pem", stat.S_IRUSR)
-    os.chmod("/client-key.pem", stat.S_IWUSR)
-    sslkey = "sslkey=/client-key.pem"
-
-    hostaddr = "hostaddr={}".format(os.environ.get('PG_HOST'))
-    user = "user=postgres"
-    password = "password={}".format(os.environ.get('PG_PASSWORD'))
-    dbname = "dbname=postgres"
-
-    # Construct database connect string
-    db_connect_string = " ".join([
-        sslmode,
-        sslrootcert,
-        sslcert,
-        sslkey,
-        hostaddr,
-        user,
-        password,
-        dbname
-    ])
-
-    # Database setup
-    con = psycopg2.connect(db_connect_string)
-    cur = con.cursor()
-    cur.execute('''CREATE TABLE IF NOT EXISTS answers
-               (question text, context text, model text, answer text, timestamp int)''')
-    con.commit()
-    con.close()
 
     # Run our Flask app and start listening for requests!
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 8080)), threaded=True)
