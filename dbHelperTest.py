@@ -1,4 +1,6 @@
 import sqlite3 as sql
+import sys
+
 
 class dbHelperTest:
 
@@ -27,7 +29,9 @@ class dbHelperTest:
 
                 con.commit()
                 return "Initial DB setup completed"
-        except:
+        except Exception as err:
+            # pass exception to function
+            print_psycopg2_exception(err)
             con.rollback()
             return "Exception occurred while initial DB setup"
         finally:
@@ -50,7 +54,8 @@ class dbHelperTest:
 
                 con.commit()
                 return "Initial DB setup completed"
-        except:
+        except Exception as err:
+            print_psycopg2_exception(err)
             con.rollback()
             return "Exception occurred while initial DB inserts"
         finally:
@@ -65,7 +70,8 @@ class dbHelperTest:
                 select_query = "SELECT * FROM NLP_Models"
                 cur = con.execute(select_query)
                 rows = cur.fetchall()
-        except:
+        except Exception as err:
+            print_psycopg2_exception(err)
             con.rollback()
             return "Exception occurred while fetching the list of models"
         finally:
@@ -201,3 +207,20 @@ class dbHelperTest:
         finally:
             con.close()
 
+# define a function that handles and parses psycopg2 exceptions
+def print_psycopg2_exception(err):
+    # get details about the exception
+    err_type, err_obj, traceback = sys.exc_info()
+
+    # get the line number when exception occured
+    line_num = traceback.tb_lineno
+    # print the connect() error
+    print("\npsycopg2 ERROR:", err, "on line number:", line_num)
+    print("psycopg2 traceback:", traceback, "-- type:", err_type)
+
+    # psycopg2 extensions.Diagnostics object attribute
+    print("\nextensions.Diagnostics:", err.diag)
+
+    # print the pgcode and pgerror exceptions
+    print("pgerror:", err.pgerror)
+    print("pgcode:", err.pgcode, "\n")
