@@ -89,3 +89,4 @@ def init_db(environment):
                    (question text, context text, model text, answer text, timestamp int)''')
     return con
 
+
