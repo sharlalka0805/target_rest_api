@@ -182,6 +182,5 @@ class modelHelper:
             }
         }
 
-        #return json.dumps(response)
         return response
 
