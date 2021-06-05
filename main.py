@@ -5,11 +5,13 @@ import time
 from transformers import pipeline
 import init as _init
 import os
+from gcloud import storage
 
 # Define Global Variables
 models = {}
 environment = ''
 con = ''
+
 
 # Create my flask app
 def create_app():
@@ -111,7 +113,6 @@ def create_app():
 
         return jsonify(models_loaded)
 
-
     # Add a model to the models available for inference
     @app.route("/models", methods=['PUT'])
     def add_model():
@@ -120,7 +121,6 @@ def create_app():
 
         if validate_model(data['name']):
             return "Model to be added already present", 400
-
 
         # Load the provided model
         if not validate_model(data['name']):
@@ -147,7 +147,6 @@ def create_app():
             })
 
         return jsonify(models_loaded)
-
 
     # Delete a model from the models available for inference
     @app.route("/models", methods=['DELETE'])
@@ -181,10 +180,23 @@ def create_app():
 
         return jsonify(models_loaded)
 
+    #Method to accept a csv and save it in a cloud storage
+    @app.route("/upload", methods=['PUT'])
+    def uploadCSV():
+        try:
+            input_csv = request.data
+            folderName = 'question-answer'
+            st = storage.Client.from_service_account_json(os.environ.get('GCP_SA_KEY'))
+            bucket = st.get_bucket(os.environ.get('STORAGE_BUCKET'))
+            blob = bucket.blob('{}/{}'.format(folderName, input_csv))
+            blob.upload_from_filename(input_csv)
+        except Exception as ex:
+            print(str(ex.message))
 
-    # --------------#
+
+    # ---------------------------------#
     #  FUNCTIONS   #
-    # --------------#
+    # ----------------------------------#
 
     # Validate that a model is available
     def validate_model(model_name):
