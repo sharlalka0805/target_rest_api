@@ -6,6 +6,7 @@ from transformers import pipeline
 import init as _init
 import os
 from gcloud import storage
+from pandas import pandas as pd
 
 # Define Global Variables
 models = {}
@@ -180,12 +181,14 @@ def create_app():
 
         return jsonify(models_loaded)
 
-    #Method to accept a csv and save it in a cloud storage
-    @app.route("/upload", methods=['PUT'])
+    # Method to accept a csv and save it in a cloud storage
+    @app.route("/upload", methods=['POST'])
     def uploadCSV():
         try:
-            input_csv = request.data
+            input_csv = request.files['file']
             folderName = 'question-answer'
+            #dataframe = pd.read_csv(input_csv)
+            #dataframe.to_csv('csv/test.csv')
             st = storage.Client.from_service_account_json(os.environ.get('GCP_SA_KEY'))
             bucket = st.get_bucket(os.environ.get('STORAGE_BUCKET'))
             blob = bucket.blob('{}/{}'.format(folderName, input_csv))
