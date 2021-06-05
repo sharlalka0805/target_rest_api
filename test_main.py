@@ -3,7 +3,7 @@ from unittest.mock import patch
 import pytest
 from main import create_app
 from transformers import pipeline
-from google.cloud import storage
+
 
 @pytest.fixture(scope='session')
 def client():
