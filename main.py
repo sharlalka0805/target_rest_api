@@ -15,7 +15,7 @@ models = {}
 environment = ''
 con = ''
 
-logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
+logging.basicConfig(format='%(levelname)s:%(message)s')
 
 
 # Create my flask app
@@ -279,4 +279,4 @@ if __name__ == '__main__':
     app = create_app()
 
     # Run our Flask app and start listening for requests!
-    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 8080)), threaded=True)
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 8080)), threaded=True,debug=True)
