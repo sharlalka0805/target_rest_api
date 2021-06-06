@@ -185,13 +185,16 @@ def create_app():
     @app.route("/upload", methods=['POST'])
     def uploadCSV():
         try:
+            print('Inside uploadCSV')
             input_csv = request.files['file']
             folderName = 'question-answer'
-            #dataframe = pd.read_csv(input_csv)
-            #dataframe.to_csv('csv/test.csv')
+            print('Inside uploadCSV --> File fetched ')
             st = storage.Client.from_service_account_json(os.environ.get('GCP_SA_KEY'))
+            print('Inside uploadCSV --> Conected to storage bucket')
             bucket = st.get_bucket(os.environ.get('STORAGE_BUCKET'))
+            print('Inside uploadCSV --> Conected to storage bucket --> ',os.environ.get('STORAGE_BUCKET'))
             blob = bucket.blob('{}/{}'.format(folderName, input_csv))
+            print('Uploadeing File')
             blob.upload_from_filename(input_csv)
         except Exception as ex:
             print(str(ex.message))
