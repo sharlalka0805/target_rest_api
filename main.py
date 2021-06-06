@@ -1,3 +1,5 @@
+import logging
+
 from flask import Flask
 from flask import request
 from flask import jsonify
@@ -6,12 +8,14 @@ from transformers import pipeline
 import init as _init
 import os
 from gcloud import storage
-from pandas import pandas as pd
+import file_util
 
 # Define Global Variables
 models = {}
 environment = ''
 con = ''
+
+logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
 
 # Create my flask app
@@ -29,175 +33,192 @@ def create_app():
     # Face model.
     @app.route("/answer", methods=['POST'])
     def answer():
+        logging.info('Inside answer -- POST -->')
 
-        # Get the request body data
-        data = request.json
+        try:
+            # Get the request body data
+            data = request.json
 
-        # Validate model name if given
-        if request.args.get('model') != None:
-            if not validate_model(request.args.get('model')):
-                return "Model not found", 400
+            # Validate model name if given
+            if request.args.get('model') != None:
+                if not validate_model(request.args.get('model')):
+                    return "Model not found", 400
 
-        # Answer the question
-        answer, model_name = answer_question(request.args.get('model'),
-                                             data['question'], data['context'])
-        timestamp = int(time.time())
+            # Answer the question
+            answer, model_name = answer_question(request.args.get('model'),
+                                                 data['question'], data['context'])
+            timestamp = int(time.time())
 
-        # Insert our answer in the database
-        con = _init.init_db(environment)
-        cur = con.cursor()
-        sql = "INSERT INTO answers VALUES ('{question}','{context}','{model}','{answer}',{timestamp})"
-        cur.execute(sql.format(
-            question=data['question'].replace("'", "''"),
-            context=data['context'].replace("'", "''"),
-            model=model_name,
-            answer=answer,
-            timestamp=str(timestamp)))
-        con.commit()
-        con.close()
+            # Insert our answer in the database
+            con = _init.init_db(environment)
+            cur = con.cursor()
+            sql = "INSERT INTO answers VALUES ('{question}','{context}','{model}','{answer}',{timestamp})"
+            cur.execute(sql.format(
+                question=data['question'].replace("'", "''"),
+                context=data['context'].replace("'", "''"),
+                model=model_name,
+                answer=answer,
+                timestamp=str(timestamp)))
+            con.commit()
+            con.close()
 
-        # Create the response body.
-        out = {
-            "question": data['question'],
-            "context": data['context'],
-            "answer": answer,
-            "model": model_name,
-            "timestamp": timestamp
-        }
+            # Create the response body.
+            out = {
+                "question": data['question'],
+                "context": data['context'],
+                "answer": answer,
+                "model": model_name,
+                "timestamp": timestamp
+            }
 
-        return jsonify(out)
+            return jsonify(out)
+        except Exception as ex:
+            logging.error('Excecption occurred in answer' , ex)
 
     # List historical answers from the database.
     @app.route("/answer", methods=['GET'])
     def list_answer():
+        logging.info('Inside answer -- GET -->')
 
-        # Validate timestamps
-        if request.args.get('start') == None or request.args.get('end') == None:
-            return "Query timestamps not provided", 400
+        try:
 
-        # Prep SQL query
-        if request.args.get('model') != None:
-            sql = "SELECT * FROM answers WHERE timestamp >= {start} AND timestamp <= {end} AND model == '{model}'"
-            sql_rev = sql.format(start=request.args.get('start'),
-                                 end=request.args.get('end'), model=request.args.get('model'))
-        else:
-            sql = 'SELECT * FROM answers WHERE timestamp >= {start} AND timestamp <= {end}'
-            sql_rev = sql.format(start=request.args.get('start'), end=request.args.get('end'))
+            # Validate timestamps
+            if request.args.get('start') == None or request.args.get('end') == None:
+                return "Query timestamps not provided", 400
 
-        # Query the database
-        con = _init.init_db(environment)
-        cur = con.cursor()
-        out = []
-        for row in cur.execute(sql_rev):
-            out.append({
-                "question": row[0],
-                "context": row[1],
-                "answer": row[2],
-                "model": row[3],
-                "timestamp": row[4]
-            })
-        con.close()
+            # Prep SQL query
+            if request.args.get('model') != None:
+                sql = "SELECT * FROM answers WHERE timestamp >= {start} AND timestamp <= {end} AND model == '{model}'"
+                sql_rev = sql.format(start=request.args.get('start'),
+                                     end=request.args.get('end'), model=request.args.get('model'))
+            else:
+                sql = 'SELECT * FROM answers WHERE timestamp >= {start} AND timestamp <= {end}'
+                sql_rev = sql.format(start=request.args.get('start'), end=request.args.get('end'))
 
-        return jsonify(out)
+            # Query the database
+            con = _init.init_db(environment)
+            cur = con.cursor()
+            out = []
+            for row in cur.execute(sql_rev):
+                out.append({
+                    "question": row[0],
+                    "context": row[1],
+                    "answer": row[2],
+                    "model": row[3],
+                    "timestamp": row[4]
+                })
+            con.close()
+
+            return jsonify(out)
+        except Exception as ex:
+            logging.error('Exception occured in answer -- GET' , ex)
 
     # List models currently available for inference
     @app.route("/models", methods=['GET'])
     def list_model():
-        # Get the loaded models
-        models_loaded = []
-        for m in models['models']:
-            models_loaded.append({
-                'name': m['name'],
-                'tokenizer': m['tokenizer'],
-                'model': m['model']
-            })
-
-        return jsonify(models_loaded)
+        logging.info('Inside get models --> ')
+        try:
+            # Get the loaded models
+            models_loaded = []
+            for m in models['models']:
+                models_loaded.append({
+                    'name': m['name'],
+                    'tokenizer': m['tokenizer'],
+                    'model': m['model']
+                })
+            return jsonify(models_loaded)
+        except Exception as ex:
+            logging.error('Exception occured in get models -- GET', ex)
 
     # Add a model to the models available for inference
     @app.route("/models", methods=['PUT'])
     def add_model():
-        # Get the request body data
-        data = request.json
+        logging.info('Inside get models PUT --> ')
 
-        if validate_model(data['name']):
-            return "Model to be added already present", 400
+        try:
+            # Get the request body data
+            data = request.json
 
-        # Load the provided model
-        if not validate_model(data['name']):
-            models_rev = []
+            if validate_model(data['name']):
+                return "Model to be added already present", 400
+
+            # Load the provided model
+            if not validate_model(data['name']):
+                models_rev = []
+                for m in models['models']:
+                    models_rev.append(m)
+                models_rev.append({
+                    'name': data['name'],
+                    'tokenizer': data['tokenizer'],
+                    'model': data['model'],
+                    'pipeline': pipeline('question-answering',
+                                         model=data['model'],
+                                         tokenizer=data['tokenizer'])
+                })
+                models['models'] = models_rev
+
+            # Get the loaded models
+            models_loaded = []
             for m in models['models']:
-                models_rev.append(m)
-            models_rev.append({
-                'name': data['name'],
-                'tokenizer': data['tokenizer'],
-                'model': data['model'],
-                'pipeline': pipeline('question-answering',
-                                     model=data['model'],
-                                     tokenizer=data['tokenizer'])
-            })
-            models['models'] = models_rev
+                models_loaded.append({
+                    'name': m['name'],
+                    'tokenizer': m['tokenizer'],
+                    'model': m['model']
+                })
 
-        # Get the loaded models
-        models_loaded = []
-        for m in models['models']:
-            models_loaded.append({
-                'name': m['name'],
-                'tokenizer': m['tokenizer'],
-                'model': m['model']
-            })
-
-        return jsonify(models_loaded)
+            return jsonify(models_loaded)
+        except Exception as ex:
+            logging.error('Exception occured in get models -- PUT', ex)
 
     # Delete a model from the models available for inference
     @app.route("/models", methods=['DELETE'])
     def delete_model():
-        # Validate model name if given
-        if request.args.get('model') == None:
-            return "Model name not provided in query string", 400
+        logging.info('delete_model --> DELETE')
+        try:
 
-        # Error if trying to delete default model
-        if request.args.get('model') == models['default']:
-            return "Can't delete default model", 400
+            # Validate model name if given
+            if request.args.get('model') == None:
+                return "Model name not provided in query string", 400
 
-        if not validate_model(request.args.get('model')):
-            return "Model to be deleted not present", 400
+            # Error if trying to delete default model
+            if request.args.get('model') == models['default']:
+                return "Can't delete default model", 400
 
-        # Load the provided model
-        models_rev = []
-        for m in models['models']:
-            if m['name'] != request.args.get('model'):
-                models_rev.append(m)
-        models['models'] = models_rev
+            if not validate_model(request.args.get('model')):
+                return "Model to be deleted not present", 400
 
-        # Get the loaded models
-        models_loaded = []
-        for m in models['models']:
-            models_loaded.append({
-                'name': m['name'],
-                'tokenizer': m['tokenizer'],
-                'model': m['model']
-            })
+            # Load the provided model
+            models_rev = []
+            for m in models['models']:
+                if m['name'] != request.args.get('model'):
+                    models_rev.append(m)
+            models['models'] = models_rev
 
-        return jsonify(models_loaded)
+            # Get the loaded models
+            models_loaded = []
+            for m in models['models']:
+                models_loaded.append({
+                    'name': m['name'],
+                    'tokenizer': m['tokenizer'],
+                    'model': m['model']
+                })
+
+            return jsonify(models_loaded)
+        except Exception as ex:
+            logging.error('Exception occured in get models -- DELETE', ex)
 
     # Method to accept a csv and save it in a cloud storage
     @app.route("/upload", methods=['POST'])
     def uploadCSV():
+        logging.info('Inside upload CSV --> POST')
         try:
-            print('Inside uploadCSV')
             input_csv = request.files['file']
-            folderName = 'question-answer'
-            print('Inside uploadCSV --> File fetched ')
-            st = storage.Client.from_service_account_json(os.environ.get('GCP_SA_KEY'))
-            print('Inside uploadCSV --> Conected to storage bucket')
-            bucket = st.get_bucket(os.environ.get('STORAGE_BUCKET'))
-            print('Inside uploadCSV --> Conected to storage bucket --> ',os.environ.get('STORAGE_BUCKET'))
-            blob = bucket.blob('{}/{}'.format(folderName, input_csv))
-            print('Uploadeing File')
-            blob.upload_from_filename(input_csv)
+            logging.info('Inside uploadCSV --> File fetched ')
+            if input_csv is not None:
+                file_util.init(environment)
+                file_util.uploadOneFile('question-answer','question',input_csv)
         except Exception as ex:
-            print(str(ex.message))
+            logging.error('Exception occured in upload CSV', ex)
 
 
     # ---------------------------------#
