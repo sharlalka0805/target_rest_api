@@ -77,6 +77,7 @@ def getInitialModel():
 
 
 def init_db(environment):
+    print('Inside init_db' , environment)
     if environment == 'PROD':
         db_connect_string = getDBString_PROD()
         con = psycopg2.connect(db_connect_string)
