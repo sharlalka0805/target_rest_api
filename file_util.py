@@ -18,7 +18,6 @@ def uploadOneFile(folder,filename,file):
     timestamp = int(time.time())
     try:
         blob = bucket.blob(folder+delimiter+filename+'_'+str(timestamp)+'.csv')
-        #blob.upload_from_filename('question-answer/filename.csv')
         blob.upload_from_filename(file)
     except Exception as ex:
         logging.error("Exception occurred while trying to upload files " , ex)
