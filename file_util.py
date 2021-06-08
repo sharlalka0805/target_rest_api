@@ -13,14 +13,15 @@ bucket = ''
 folder = ''
 
 
-def uploadOneFile(folder,filename,file):
+def uploadOneFile(bucket,filename):
     logging.info('Inside File Uploads')
     timestamp = int(time.time())
     try:
-        blob = bucket.blob(folder+delimiter+filename+'_'+str(timestamp)+'.csv')
-        blob.upload_from_filename(file)
+        blob = bucket.blob(filename)
+        response = blob.upload_from_filename(filename)
     except Exception as ex:
         logging.error("Exception occurred while trying to upload files " , ex)
+    return response
 
 
 def downloadFiles(folder):
@@ -67,6 +68,7 @@ def init(environment):
         storage_client = storage.Client.from_service_account_json(os.environ.get('GCP_SA_KEY'))
         bucket = storage_client.get_bucket(bucket_name)
         folder = 'question-answer'
+    return bucket,folder
 
 
 if __name__ == '__main__':
@@ -74,6 +76,6 @@ if __name__ == '__main__':
     #downloadFiles()
     #deleteFiles()
     #uploadFiles()
-    delete_one_file(folder,'testAnswer.csv')
+    #delete_one_file(folder,'testAnswer.csv')
 
 
