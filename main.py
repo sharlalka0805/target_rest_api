@@ -7,7 +7,7 @@ import time
 from transformers import pipeline
 import init as _init
 import os
-from gcloud import storage
+import pandas as pd
 import file_util
 
 # Define Global Variables
@@ -15,7 +15,7 @@ models = {}
 environment = ''
 con = ''
 
-logging.basicConfig(format='%(levelname)s:%(message)s')
+#logging.basicConfig(format='%(levelname)s:%(message)s')
 
 
 # Create my flask app
@@ -25,7 +25,7 @@ def create_app():
 
     @app.route("/")
     def hello_world():
-        return "<p>The question answering API is healthy!</p>"
+        return "<p>Welcome to MGMT REST API!</p>"
 
     # Define a handler for the /answer path, which
     # processes a JSON payload with a question and
@@ -215,10 +215,15 @@ def create_app():
             input_csv = request.files['file']
             logging.info('Inside uploadCSV --> File fetched ')
             if input_csv is not None:
-                file_util.init(environment)
-                file_util.uploadOneFile('question-answer','question',input_csv)
+                bucket, folder = file_util.init(environment)
+                dataFrame = pd.read_csv(input_csv)
+                timestamp = int(time.time())
+                fileName = folder+'/'+'question'+'_'+str(timestamp)+'.csv'
+                csvFile = dataFrame.to_csv(folder+'/'+'question'+'_'+str(timestamp)+'.csv')
+                response = file_util.uploadOneFile(bucket,fileName)
         except Exception as ex:
             logging.error('Exception occured in upload CSV', ex)
+        return "File Uploaded Successfully", 200
 
 
     # ---------------------------------#
@@ -273,10 +278,10 @@ def create_app():
 # Run main by default if running "python answer.py"
 if __name__ == '__main__':
 
-    environment = 'PROD'
+    environment = 'LOCAL'
     models = _init.getInitialModel()
 
     app = create_app()
 
     # Run our Flask app and start listening for requests!
-    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 8080)), threaded=True,debug=True)
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)), threaded=True)
