@@ -257,7 +257,7 @@ def create_app():
 
         return answer, model_name
 
-        # Exception Handler
+    # Exception Handler
     @app.errorhandler(Exception)
     def handle_exception(error):
             message = [str(x) for x in error.args]
@@ -278,7 +278,7 @@ def create_app():
 # Run main by default if running "python answer.py"
 if __name__ == '__main__':
 
-    environment = 'LOCAL'
+    environment = 'PROD'
     models = _init.getInitialModel()
 
     app = create_app()
