@@ -3,6 +3,7 @@ import os
 from gcloud import storage
 import time
 import base64
+import stat
 
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
@@ -73,11 +74,14 @@ def init(environment):
 
 def getCrededential():
     filecontents = os.environ.get('GCS_CREDS')
+    filecontents = filecontents.replace('@', '=')
     decoded_cred = base64.b64decode(filecontents)
     with open('/usr/src/app/creds.json','w') as f:
         f.write(decoded_cred)
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/usr/src/app/creds.json"
-#define google application credentials as the path to the above file
+
+    os.chmod("/creds.json", stat.S_IRUSR)
+    os.chmod("/server-ca.pem", stat.S_IWUSR)
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/creds.json"
 
 
 if __name__ == '__main__':
