@@ -65,8 +65,8 @@ def init(environment):
     elif environment == 'PROD':
         bucket_name = os.environ.get('STORAGE_BUCKET')
         getCrededential()
-        storage_client = storage.Client.from_service_account_json('/usr/src/app/creds.json')
-        #storage_client = storage.client()
+        #storage_client = storage.Client.from_service_account_json('/usr/src/app/creds.json')
+        storage_client = storage.Client()
         bucket = storage_client.get_bucket(bucket_name)
         folder = 'question-answer'
     return bucket,folder
