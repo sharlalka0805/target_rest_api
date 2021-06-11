@@ -12,7 +12,6 @@ environment = ''
 bucket = ''
 
 
-
 def uploadOneFile(bucket,filename):
     logging.info('Inside File Uploads')
     try:
@@ -76,11 +75,11 @@ def getCrededential():
     filecontents = os.environ.get('GCS_CREDS')
     filecontents = filecontents.replace('@', '=')
     decoded_cred = base64.b64decode(filecontents)
-    with open('/usr/src/app/creds.json','w') as f:
+    with open('/creds.json','w') as f:
         f.write(decoded_cred)
 
     os.chmod("/creds.json", stat.S_IRUSR)
-    os.chmod("/server-ca.pem", stat.S_IWUSR)
+    os.chmod("/creds.json", stat.S_IWUSR)
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/creds.json"
 
 
