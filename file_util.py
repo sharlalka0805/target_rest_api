@@ -2,20 +2,18 @@ import logging
 import os
 from gcloud import storage
 import time
+import base64
 
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
-
-# The “folder” where the files you want to download are on google stirage
 
 delimiter='/'
 environment = ''
 bucket = ''
-folder = ''
+
 
 
 def uploadOneFile(bucket,filename):
     logging.info('Inside File Uploads')
-    timestamp = int(time.time())
     try:
         blob = bucket.blob(filename)
         response = blob.upload_from_filename(filename)
@@ -65,15 +63,26 @@ def init(environment):
         folder = 'question-answer'
     elif environment == 'PROD':
         bucket_name = os.environ.get('STORAGE_BUCKET')
-        storage_client = storage.Client.from_service_account_json(os.environ.get('GCP_SA_KEY'))
+        getCrededential()
+        #storage_client = storage.Client.from_service_account_json('/usr/src/app/creds.json')
+        storage_client = storage.client()
         bucket = storage_client.get_bucket(bucket_name)
         folder = 'question-answer'
     return bucket,folder
 
 
+def getCrededential():
+    filecontents = os.environ.get('GCS_CREDS')
+    decoded_cred = base64.b64decode(filecontents)
+    with open('/usr/src/app/creds.json','w') as f:
+        f.write(decoded_cred)
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/usr/src/app/creds.json"
+#define google application credentials as the path to the above file
+
+
 if __name__ == '__main__':
-    init('LOCAL')
-    #downloadFiles()
+    bucket,folder = init('LOCAL')
+    downloadFiles(folder)
     #deleteFiles()
     #uploadFiles()
     #delete_one_file(folder,'testAnswer.csv')
