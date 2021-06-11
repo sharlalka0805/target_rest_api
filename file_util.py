@@ -4,6 +4,7 @@ from gcloud import storage
 import time
 import base64
 import stat
+from werkzeug.utils import secure_filename
 
 logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
 
@@ -75,13 +76,12 @@ def getCrededential():
     filecontents = os.environ.get('GCS_CREDS')
     filecontents = filecontents.replace('@', '=')
     decoded_cred = base64.b64decode(filecontents)
-    with open('/creds.json','w') as f:
+    with open('/creds.json','wb') as f:
         f.write(decoded_cred)
 
     os.chmod("/creds.json", stat.S_IRUSR)
     os.chmod("/creds.json", stat.S_IWUSR)
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/creds.json"
-
 
 if __name__ == '__main__':
     bucket,folder = init('LOCAL')
