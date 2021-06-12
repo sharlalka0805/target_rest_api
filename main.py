@@ -15,8 +15,8 @@ models = {}
 environment = ''
 con = ''
 
-#logging.basicConfig(format='%(levelname)s:%(message)s')
 
+#logging.basicConfig(format='%(levelname)s:%(message)s')
 
 # Create my flask app
 def create_app():
