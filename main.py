@@ -219,8 +219,10 @@ def create_app():
                 dataFrame = pd.read_csv(input_csv)
                 timestamp = int(time.time())
                 folder = '/question-answer'
+                if not os.path.exists(folder):
+                    os.makedirs(folder, mode=0o777)
                 fileName = folder+'/'+'question'+'_'+str(timestamp)+'.csv'
-                csvFile = dataFrame.to_csv(folder+'/'+'question'+'_'+str(timestamp)+'.csv')
+                csvFile = dataFrame.to_csv(fileName)
                 response = file_util.uploadOneFile(bucket,fileName)
         except Exception as ex:
             logging.error('Exception occured in upload CSV', ex)
@@ -277,13 +279,9 @@ def create_app():
     return app
 
 
-# Run main by default if running "python answer.py"
 if __name__ == '__main__':
 
     environment = 'PROD'
     models = _init.getInitialModel()
-
     app = create_app()
-
-    # Run our Flask app and start listening for requests!
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)), threaded=True)
