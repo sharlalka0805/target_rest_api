@@ -218,7 +218,7 @@ def create_app():
                 bucket = file_util.init(environment)
                 dataFrame = pd.read_csv(input_csv)
                 timestamp = int(time.time())
-                folder = '/question-answer'
+                folder = 'question-answer'
                 if not os.path.exists(folder):
                     os.makedirs(folder, mode=0o777)
                 fileName = folder+'/'+'question'+'_'+str(timestamp)+'.csv'
