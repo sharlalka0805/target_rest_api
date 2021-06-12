@@ -215,9 +215,10 @@ def create_app():
             input_csv = request.files['file']
             logging.info('Inside uploadCSV --> File fetched ')
             if input_csv is not None:
-                bucket, folder = file_util.init(environment)
+                bucket = file_util.init(environment)
                 dataFrame = pd.read_csv(input_csv)
                 timestamp = int(time.time())
+                folder = '/question-answer'
                 fileName = folder+'/'+'question'+'_'+str(timestamp)+'.csv'
                 csvFile = dataFrame.to_csv(folder+'/'+'question'+'_'+str(timestamp)+'.csv')
                 response = file_util.uploadOneFile(bucket,fileName)
@@ -229,6 +230,7 @@ def create_app():
     # ---------------------------------#
     #  FUNCTIONS   #
     # ----------------------------------#
+
 
     # Validate that a model is available
     def validate_model(model_name):
