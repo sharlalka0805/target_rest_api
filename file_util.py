@@ -61,7 +61,6 @@ def init(environment):
         bucket_name = 'mgmt590-storage'
         storage_client = storage.Client.from_service_account_json('credentials.json')
         bucket = storage_client.get_bucket(bucket_name)
-        folder = 'question-answer'
     elif environment == 'PROD':
         bucket_name = os.environ.get('STORAGE_BUCKET')
         getCrededential()
@@ -71,8 +70,7 @@ def init(environment):
         print('After storage_client')
         bucket = storage_client.get_bucket(bucket_name)
         print('After bucket')
-        folder = 'question-answer'
-    return bucket,folder
+    return bucket
 
 
 def getCrededential():
@@ -101,8 +99,8 @@ def getCrededential():
     # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/creds.json"
 
 if __name__ == '__main__':
-    bucket,folder = init('LOCAL')
-    downloadFiles(folder)
+    bucket = init('LOCAL')
+    downloadFiles('/question-answer')
     #deleteFiles()
     #uploadFiles()
     #delete_one_file(folder,'testAnswer.csv')
