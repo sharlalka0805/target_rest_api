@@ -65,7 +65,6 @@ def init(environment):
         bucket_name = os.environ.get('STORAGE_BUCKET')
         getCrededential()
         print('After get credentials')
-        #storage_client = storage.Client.from_service_account_json('/usr/src/app/creds.json')
         storage_client = storage.Client()
         print('After storage_client')
         bucket = storage_client.get_bucket(bucket_name)
@@ -88,15 +87,6 @@ def getCrededential():
     os.chmod("/creds.json", stat.S_IRUSR)
     os.chmod("/creds.json", stat.S_IWUSR)
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/creds.json"
-
-    # filecontents = os.environ.get('GCS_CREDS')
-    # filecontents = filecontents.replace('@', '=')
-    # with open('/creds.json','wb') as f:
-    #     f.write(decoded_cred)
-    #
-    # os.chmod("/creds.json", stat.S_IRUSR)
-    # os.chmod("/creds.json", stat.S_IWUSR)
-    # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/creds.json"
 
 if __name__ == '__main__':
     bucket = init('LOCAL')
