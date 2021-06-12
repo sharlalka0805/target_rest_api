@@ -55,7 +55,7 @@ def delete_one_file(folder,filename):
 
 
 def init(environment):
-    logging.info('Inside init',environment)
+    print('Inside init',environment)
 
     if environment == 'LOCAL':
         bucket_name = 'mgmt590-storage'
@@ -65,23 +65,40 @@ def init(environment):
     elif environment == 'PROD':
         bucket_name = os.environ.get('STORAGE_BUCKET')
         getCrededential()
+        print('After get credentials')
         #storage_client = storage.Client.from_service_account_json('/usr/src/app/creds.json')
         storage_client = storage.Client()
+        print('After storage_client')
         bucket = storage_client.get_bucket(bucket_name)
+        print('After bucket')
         folder = 'question-answer'
     return bucket,folder
 
 
 def getCrededential():
+    print('Inside getCrededential')
     filecontents = os.environ.get('GCS_CREDS')
+    print('Inside getCrededential --> found creds')
     filecontents = filecontents.replace('@', '=')
-    decoded_cred = base64.b64decode(filecontents)
-    with open('/creds.json','wb') as f:
-        f.write(decoded_cred)
-
+    print('Inside getCrededential --> replaced creds creds')
+    decoded_cred = base64.b64decode(filecontents.decode('utf-8'))
+    print('Inside getCrededential --> decoded creds creds')
+    file = open("/creds.json", "wb")
+    file.write(decoded_cred)
+    print('Inside getCrededential --> write file')
+    file.close()
     os.chmod("/creds.json", stat.S_IRUSR)
     os.chmod("/creds.json", stat.S_IWUSR)
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/creds.json"
+
+    # filecontents = os.environ.get('GCS_CREDS')
+    # filecontents = filecontents.replace('@', '=')
+    # with open('/creds.json','wb') as f:
+    #     f.write(decoded_cred)
+    #
+    # os.chmod("/creds.json", stat.S_IRUSR)
+    # os.chmod("/creds.json", stat.S_IWUSR)
+    # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/creds.json"
 
 if __name__ == '__main__':
     bucket,folder = init('LOCAL')
