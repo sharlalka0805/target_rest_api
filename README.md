@@ -175,3 +175,23 @@ Sample Request:
                     Whitfield; in ITV's The Bill playing drug addict Josie Clarke; and
                     she was back in the BBC soap Doctors in 2009, playing Tansy Flack."
     }
+
+<b>Upload CSV  :</b> This route allows a user to upload a CSV to google cloud storage.</br>
+
+Service URL : https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/upload 
+
+Method and path: POST </br>
+Response Type : JSON</br>
+Sample Request Body Format: </br>
+
+    Attach a CSV in request body. Refer below example from postman:
+    
+    ![image](https://user-images.githubusercontent.com/74998715/121794614-c8ab2a80-cbd7-11eb-9c08-a907a692e1eb.png)
+
+    
+Sample Response Format:</br>
+ 
+     File Uploaded Successfully
+     
+ </br></br>
+    
