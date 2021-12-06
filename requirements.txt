@@ -1,7 +1,0 @@
-transformers==4.2.2
-flask==1.1.2
-pytest==6.2.4
-psycopg2-binary
-torch
-pandas==1.1.5
-gcloud==0.18.3
