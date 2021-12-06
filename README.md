@@ -17,3 +17,82 @@ https://redsky-uat.perf.target.com/redsky_aggregations/v1/redsky/case_study_v1?k
 •	Reads pricing information from a NoSQL data store and combines it with the product id and name from the HTTP request into a single response.
 
 •	BONUS: Accepts an HTTP PUT request at the same path (/products/{id}), containing a JSON request body like the GET response, and updates the product’s price in the data store.  
+
+*********************************************************************************************************************************
+# __Solution:__
+
+## __MyRetail API Solution provides the ability to:__
+
+<ol>
+  <li>Retrieve product and price information by Product Id.</li>
+  <li>Update the price information in the database.</li>
+  <li>Secure API with basic authentication.</li>
+  <li>One rest end point is not recure.</li>	
+  <li>Implement Swagger2 for API documentation</li>
+</ol>
+All the end points are totally secure in this application. I have implemented basic security and method level security as well. Update resource can be accessed by admin/admin user only.
+
+                                   Method               Request                   Credentials
+                                     GET              /products/{id}              [SECURE -- normaluser/normaluser]
+                                     PUT              /products/{id}              [SECURE -- admin/admin]
+					 GET              /products                   [NOT SECURE]
+
+###### __Technology Stack:__
+
+1. Spring Boot :
+   https://start.spring.io/
+   https://spring.io/guides/gs/serving-web-content/
+2. Feign:
+   Declarative REST Client: Feign creates a dynamic implementation of an interface decorated with JAX-RS or Spring MVC annotations.
+   https://cloud.spring.io/spring-cloud-netflix/
+3. MongoDB:
+   https://www.mongodb.com/what-is-mongodb
+
+4. Maven:
+   https://maven.apache.org/
+5. Mokito/Junit:
+   http://site.mockito.org/
+6. Postman:
+   https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en
+
+###### __Setup instructions:__
+
+1. Java 1.7
+2. Eclipse  Mars: http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/mars2
+3. Install Mongo DB: https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
+4. Install Maven: https://www.mkyong.com/maven/how-to-install-maven-in-windows/
+5. Github:
+   Download project from the following git repository
+   https://github.com/rohitdec01/myRetail
+
+a) Download as a ZIP file   OR
+
+b) Clone the git project from git-bash or command prompt (You must have git setup)
+
+6. Import the project into eclipse –   File->import
+
+
+###### __Test the project:__
+
+Test cases are present on the following directory. I have written some test cases for controller class and service  class using mokito. I am using mokito for mockdata.
+
+C:\WORK_ENV\workspace\myRetail\src\test\java
+
+To run the test  Go to project folder and trigger following command on the command prompt ( or gitbash).
+
+mvn test.
+
+###### __To run the application:__
+
+Run mongo DB from the command prompt.  And test  ---  http://localhost:27017/  (default port)
+Go to the project folder and trigger the command:
+
+mvn spring-boot:run
+
+###### __Check the http Request:__
+
+### Secure API
+The end point of this application is fully secure. There are 3 users in this application.
+1. admin/admin   --- Can update price information and get the product by prodctId.
+2. normaluser/normaluser  --  get the product by prodctId.
+3. dbuser/dbuser  -- get the product by prodctId.
