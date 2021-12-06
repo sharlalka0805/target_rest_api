@@ -1,198 +1,19 @@
-# About API </br>
+## Business Problem 
 
-This API can be used by users by users to provide to ask a question and fetch an automated answer from the system depending on NLP model used.</br></br>
+<b>myRetail</b> is a rapidly growing company with HQ in Richmond, VA and over 200 stores across the east coast. myRetail wants to make its internal data available to any number of client devices, from myRetail.com to native mobile apps.
+The goal for this exercise is to create an end-to-end Proof-of-Concept for a products API, which will aggregate product data from multiple sources and return it as JSON to the caller.
+Your goal is to create a RESTful service that can retrieve product and price details by ID. The URL structure is up to you to define, but try to follow some sort of logical convention.
+Build an application that performs the following actions:</br></br>
+•	Responds to an HTTP GET request at /products/{id} and delivers product data as JSON (where {id} will be a number.
+Example product IDs: 13860428, 54456119, 13264003, 12954218)
 
-# API URL </br>
-https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/
+•	Example response: {"id":13860428,"name":"The Big Lebowski (Blu-ray) (Widescreen)","current_price":{"value": 13.49,"currency_code":"USD"}}
 
-# Dependencies </br>
+•	Performs an HTTP GET to retrieve the product name from an external API. (For this exercise the data will come from redsky.target.com, but let’s just pretend this is an internal resource hosted by myRetail)  
 
-### Flask: 
-We used flask to produce the rest API
+•	Example:
+https://redsky-uat.perf.target.com/redsky_aggregations/v1/redsky/case_study_v1?key=3yUxt7WltYG7MFKPp7uyELi1K40ad2ys&tcin=13860428
 
-### Torch: 
-We used torch as a dependency for transformers
+•	Reads pricing information from a NoSQL data store and combines it with the product id and name from the HTTP request into a single response.
 
-
-### Transformers: 
-We used this dependency for answering question.
-
-You need to install all the dependencies avaailable in requirements.txt
-
-# Steps to build and run the API locally via Docker or Flask</br>
-
-1. To build the API locally , install FLASK,Tensorflow,Pytorch</br>
-2. Clone the above githib code to your local machine</br>
-3. Open the cloned code in PyCharm and go to main.py</br>
-4. Set main.py in Run COnfigurations and trigger the build </br>
-5. Your local port will be picked and API will be hosted on the same.</br>
-6. You may then your broweser to test this API </br>
-  
-# Available Routes</br>
-
-<b>List Available Models :</b> This route allows a user to obtain a list of the models currently loaded into the server and available for inference.
-</br>Service URL : https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/models   
-</br>Method and path: GET /models</br>
-Response Type : JSON</br>
-Sample Response Format:</br>
-
-      [
-          {
-              "name": "distilled-bert",
-               "tokenizer": "distilbert-base-uncased-distilled-squad",
-                "model": "distilbert-base-uncased-distilled-squad"
-          },
-          {
-               "name": "deepset-roberta",
-               "tokenizer": "deepset/roberta-base-squad2",
-               "model": "deepset/roberta-base-squad2"
-          }<
-      ]
-</br></br>
-
-<b>Add a Model :</b> This route allows a user to add a new model into the server and make it available for inference.</br>
-
-Service URL : https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/models  
-
-Method and path: PUT /models</br>
-Response Type : JSON</br>
-Sample Request Body Format: </br>
-
-     {
-        "name": "bert-tiny",
-        "tokenizer": "mrm8488/bert-tiny-5-finetuned-squadv2",
-        "model": "mrm8488/bert-tiny-5-finetuned-squadv2"
-      }
-    
-Sample Response Format:</br>
- 
-     [
-          {
-              "name": "distilled-bert",
-              "tokenizer": "distilbert-base-uncased-distilled-squad",
-              "model": "distilbert-base-uncased-distilled-squad"
-          },
-          {
-              "name": "deepset-roberta",
-              "tokenizer": "deepset/roberta-base-squad2",
-              "model": "deepset/roberta-base-squad2"
-          },
-          {
-              "name": "bert-tiny",</br>
-              "tokenizer": "mrm8488/bert-tiny-5-finetuned-squadv2",</br>
-              "model": "mrm8488/bert-tiny-5-finetuned-squadv2"</br>
-          }
-     ]
- </br></br>
-
-<b>Delete a Model :</b> This route allows a user to delete an existing model on the server such that it is no longer
-available for inference and returns the remaining list of models as a response. </br>
-
-Service URL : https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/models?model=bert-base-multilingual-uncased 
-
-Method and path: DELETE /models?model=<model name></br>
-Query Parameters: - <model name> (required) - The name of the model to be deleted</br>
-Response Type : JSON</br>
-
-Sample Response Format:</br>
-
-      [
-        {
-            "name": "distilled-bert",
-             "tokenizer": "distilbert-base-uncased-distilled-squad",
-              "model": "distilbert-base-uncased-distilled-squad"
-        },
-        {
-             "name": "deepset-roberta",</br>
-             "tokenizer": "deepset/roberta-base-squad2",
-             "model": "deepset/roberta-base-squad2"
-        }
-    ]
-    
- </br></br>
-
-<b>Answer a Question :</b> This route uses one of the available models to answer a question, given the context provided in
-the JSON payload.</br>
-Service URL : https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/answer?model=bert-base-multilingual-uncased
-
-Method and path: POST /answer?model=<model name></br>
-Query Parameters:  
-        - <model name> (optional) - The name of the model to be used in answering the question. If no model name is provided use a default model. </br>
-Response Type : JSON</br>
-
-Sample Request Body Format: </br>
-
-          { 
-                "question": "who did holly matthews play in waterloo rd?",
-                "context": "She attended the British drama school East 15 in 2005,
-                            and left after winning a high-profile role in the BBC drama Waterloo 
-                            Road, playing the bully Leigh-Ann Galloway.[6] Since that role, 
-                            Matthews has continued to act in BBC's Doctors, playing Connie
-                           Whitfield; in ITV's The Bill playing drug addict Josie Clarke; and
-                            she was back in the BBC soap Doctors in 2009, playing Tansy Flack."
-          }
-          
- </br>
-   Sample Response Format:</br>
-
-    {
-          "timestamp": 1621602784,
-           "model": "deepset-roberta",
-          "answer": "Leigh-Ann Galloway",
-          "question": "who did holly matthews play in waterloo rd?",
-          "context": "She attended the British drama school East 15 in 2005,
-                      and left after winning a high-profile role in the BBC drama Waterloo
-                    Road, playing the bully Leigh-Ann Galloway.[6] Since that role,
-                  Matthews has continued to act in BBC's Doctors, playing Connie
-                  Whitfield; in ITV's The Bill playing drug addict Josie Clarke; and
-                she was back in the BBC soap Doctors in 2009, playing Tansy Flack."
-    }
-    
-</br></br>
-
-<b>List Recently Answered Questions :</b> This route returns recently answered questions.</br>
-
-Method and path: GET /answer?model=<model name>&start=<start timestamp>&end=<end timestamp></br>
-Query Parameters:</br>
-         - <model name> (optional) - Filter the results by providing a certain model name, such
-                                    that the results only include answered questions that were answered using the provided
-                                    model.</br>
-       - <start timestamp> (required) - The starting timestamp, such that answers to questions
-                                        prior to this timestamp won't be returned.</br>
-       - <end timestamp> (required) -  The ending timestamp, such that answers to questions
-                                         after this timestamp won't be returned.</br>
-     
-Sample Request:
-
-          {
-             "timestamp": 1621602784,
-             "model": "deepset-roberta",
-              "answer": "Leigh-Ann Galloway",
-             "question": "who did holly matthews play in waterloo rd?",
-             "context": "She attended the British drama school East 15 in 2005,
-                    and left after winning a high-profile role in the BBC drama Waterlo
-                    Road, playing the bully Leigh-Ann Galloway.[6] Since that role,
-                    Matthews has continued to act in BBC's Doctors, playing Connie
-                    Whitfield; in ITV's The Bill playing drug addict Josie Clarke; and
-                    she was back in the BBC soap Doctors in 2009, playing Tansy Flack."
-    }
-
-<b>Upload CSV  :</b> This route allows a user to upload a CSV to google cloud storage.</br>
-
-Service URL : https://mgmt-rest-api-shipra-yu4izdrwlq-uc.a.run.app/upload 
-
-Method and path: POST </br>
-Response Type : JSON</br>
-Sample Request Body Format: </br>
-
-    Attach a CSV in request body. Refer below example from postman:
-    
-    ![image](https://user-images.githubusercontent.com/74998715/121794614-c8ab2a80-cbd7-11eb-9c08-a907a692e1eb.png)
-
-    
-Sample Response Format:</br>
- 
-     File Uploaded Successfully
-     
- </br></br>
-    
+•	BONUS: Accepts an HTTP PUT request at the same path (/products/{id}), containing a JSON request body like the GET response, and updates the product’s price in the data store.  
