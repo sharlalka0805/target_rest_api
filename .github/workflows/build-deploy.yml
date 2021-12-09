@@ -10,22 +10,9 @@ env:
   REGION: us-central1
 
 jobs:
-  test:
-    name: Unit-Test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Set up JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Maven Package
-        run: mvn -B clean package
-      - name: Maven Verify
-        run: mvn -B clean verify -DskipTests
   deploy:
-    name: Publish Docker Image
     runs-on: ubuntu-latest
+    name: A job to build and push docker
     steps:
     - name: Checkout
       uses: actions/checkout@v2
@@ -36,6 +23,14 @@ jobs:
         project_id: ${{ env.PROJECT_ID }}
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         export_default_credentials: true
+
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+          java-version: 1.8
+
+    - name: Build with Maven
+      run: mvn clean package -Dmaven.test.skip=true
 
     - name: Authorize Docker push
       run: gcloud auth configure-docker
