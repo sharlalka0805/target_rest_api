@@ -25,7 +25,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @WebMvcTest(value = ProductController.class)
 @RunWith(SpringRunner.class)
-
 public class ProductControllerTest {
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 

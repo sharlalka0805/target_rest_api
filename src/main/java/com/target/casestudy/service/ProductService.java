@@ -1,6 +1,7 @@
 package com.target.casestudy.service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -8,9 +9,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.target.casestudy.entity.Product;
 import com.target.casestudy.entity.ProductInfo;
 import com.target.casestudy.repository.ProductRepository;
+import com.target.casestudy.repository.ProductRepositoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +31,12 @@ public class ProductService {
 	@Autowired
 	private RestTemplate restTemplate;
 
+	@Value("${service.url}")
+	private String baseUrl;
+
+	@Autowired
+	private ProductRepositoryImpl productRepositoryImpl;
+
 	public ProductInfo getProductDetails(String productId) throws Exception
 	{
 		ProductInfo productResponse = null;
@@ -42,9 +51,9 @@ public class ProductService {
 			if(!Objects.isNull(product))
 			{
 				productResponse = new ProductInfo();
-				productResponse.setProductId(productId);
-				productResponse.setProductTitle(name);
-				productResponse.setPrice(product.getCurrent_price());
+				productResponse.setId(productId);
+				productResponse.setName(name);
+				productResponse.setCurrent_price(product.getCurrent_price());
 			}
 		}catch (Exception ex)
 		{
@@ -81,27 +90,28 @@ public class ProductService {
 
 	private Map<String, Map> getProductInfoFromProductInfoService(String productId) throws JsonParseException, JsonMappingException, IOException {
 		Map<String, Map> result ;
-		RestTemplate restTemplate = new RestTemplate();
-		String url = "https://redsky-uat.perf.target.com/redsky_aggregations/v1/redsky/case_study_v1?key=3yUxt7WltYG7MFKPp7uyELi1K40ad2ys&tcin="+productId;
+		String url = baseUrl+productId;
 		ResponseEntity<String> response
-				= restTemplate.getForEntity(url, String.class);
+				= this.restTemplate.getForEntity(url, String.class);
 		ObjectMapper mapper = new ObjectMapper();
 		result = mapper.readValue(response.getBody(), Map.class);
 
 		return result;
 	}
 
-	public void updateProductPrice(ProductInfo productInfo) {
+	public void updateProductPrice(ProductInfo productInfo) throws Exception {
 		// check if product exists
-		Product product = productRepository.getProductByproductId(productInfo.getProductId());
+		Product product = this.productRepository.getProductByproductId(productInfo.getId());
 
 		if(product != null)
 		{
 			Product newProduct = new Product();
-			newProduct.setProductId(productInfo.getProductId());
-			newProduct.setCurrent_price(productInfo.getPrice());
-			productRepository.save(product);
+			newProduct.setProductId(productInfo.getId());
+			newProduct.setCurrent_price(productInfo.getCurrent_price());
+			this.productRepositoryImpl.updatePriceInfo(productInfo.getCurrent_price(),productInfo.getId());
+		}else
+		{
+			throw new Exception();
 		}
 	}
-
 }

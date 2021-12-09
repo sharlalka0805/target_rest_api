@@ -70,7 +70,7 @@ public class ProductServiceTest {
 		currency.put("currency_code", "USD");
 		Product expectedProduct = new Product("13860428", currency1);
 
-		assertEquals(expectedProduct.getProductId(), actualProduct.getProductId());
+		assertEquals(expectedProduct.getProductId(), actualProduct.getId());
 	}
 
 

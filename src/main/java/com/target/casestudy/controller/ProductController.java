@@ -23,7 +23,8 @@ public class ProductController {
 
 
 	@RequestMapping(value = "",method = RequestMethod.GET)
-	public String index() {
+	public String getAll()
+	{
 		return "Hello world !";
 	}
 
@@ -38,7 +39,7 @@ public class ProductController {
 		} catch (Exception e) {
 			log.debug("Product Not Found Exception  " + e);
 			throw new ResponseStatusException(
-					HttpStatus.NOT_FOUND, "Product Not Found", e);
+					HttpStatus.NOT_FOUND, "Product Not Found");
 		}
 		return new ResponseEntity<ProductInfo>(product, HttpStatus.OK);
 	}
@@ -49,8 +50,15 @@ public class ProductController {
 		CustomResponse response = new CustomResponse();
 		try {
 			if(product != null) {
-				if(!product.getProductId().isEmpty())
-					productService.updateProductPrice(product);
+				if(product.getId() != null && !product.getId().isEmpty())
+				{
+					if(product.getCurrent_price() != null)
+					{
+						productService.updateProductPrice(product);
+						response.setMessage("Product updated successfully");
+					}else
+						response.setMessage("Please provide price info");
+				}
 				else
 					response.setMessage("Please provide product id");
 			}else
@@ -58,7 +66,7 @@ public class ProductController {
 		} catch (Exception e) {
 			log.debug("Product Not Found Exception while update " + e);
 			throw new ResponseStatusException(
-					HttpStatus.NOT_FOUND, "Product Not Found", e);
+					HttpStatus.NOT_FOUND, "Product Not Found");
 		}
 
 		return new ResponseEntity<CustomResponse>(response,HttpStatus.OK);

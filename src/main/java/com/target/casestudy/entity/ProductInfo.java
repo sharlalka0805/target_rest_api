@@ -1,39 +1,35 @@
 package com.target.casestudy.entity;
 
-import com.mongodb.annotations.Beta;
-import org.springframework.context.annotation.Bean;
-
-import java.math.BigDecimal;
 import java.util.Map;
 
 
 public class ProductInfo {
 
-    String productId;
-    String productTitle;
-    Map<String,String> price;
+    String id;
+    String name;
+    Map<String,String> current_price;
 
-    public String getProductId() {
-        return productId;
+    public String getId() {
+        return id;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getProductTitle() {
-        return productTitle;
+    public String getName() {
+        return name;
     }
 
-    public void setProductTitle(String productTitle) {
-        this.productTitle = productTitle;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Map<String, String> getPrice() {
-        return price;
+    public Map<String, String> getCurrent_price() {
+        return current_price;
     }
 
-    public void setPrice(Map<String, String> price) {
-        this.price = price;
+    public void setCurrent_price(Map<String, String> current_price) {
+        this.current_price = current_price;
     }
 }

@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @Document(collection="products")
 public class Product {
@@ -11,6 +12,7 @@ public class Product {
 	@Id
 	public String productId;
 
+	@Field("current_price")
 	public Map<String, String> current_price;
 
 	public Product() {

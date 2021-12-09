@@ -26,50 +26,46 @@ https://redsky-uat.perf.target.com/redsky_aggregations/v1/redsky/case_study_v1?k
 <ol>
   <li>Retrieve product and price information by Product Id.</li>
   <li>Update the price information in the database.</li>
-  <li>Secure API with basic authentication.</li>
-  <li>One rest end point is not recure.</li>	
-  <li>Implement Swagger2 for API documentation</li>
+
 </ol>
 All the end points are totally secure in this application. I have implemented basic security and method level security as well. Update resource can be accessed by admin/admin user only.
 
-                                   Method               Request                   Credentials
-                                     GET              /products/{id}              [SECURE -- normaluser/normaluser]
-                                     PUT              /products/{id}              [SECURE -- admin/admin]
-					 GET              /products                   [NOT SECURE]
+                                   Method               Request                   
+                                     GET              /products/{id}             
+                                     PUT              /products/{id}              
+				
 
 ###### __Technology Stack:__
 
 1. Spring Boot :
    https://start.spring.io/
    https://spring.io/guides/gs/serving-web-content/
-2. Feign:
-   Declarative REST Client: Feign creates a dynamic implementation of an interface decorated with JAX-RS or Spring MVC annotations.
-   https://cloud.spring.io/spring-cloud-netflix/
-3. MongoDB:
+
+2. MongoDB:
    https://www.mongodb.com/what-is-mongodb
 
-4. Maven:
+3. Maven:
    https://maven.apache.org/
-5. Mokito/Junit:
+4. Mokito/Junit:
    http://site.mockito.org/
-6. Postman:
+5. Postman:
    https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en
 
 ###### __Setup instructions:__
 
-1. Java 1.7
-2. Eclipse  Mars: http://www.eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/mars2
+1. Java 1.7+
+2. IDE of your choice
 3. Install Mongo DB: https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
 4. Install Maven: https://www.mkyong.com/maven/how-to-install-maven-in-windows/
 5. Github:
    Download project from the following git repository
-   https://github.com/rohitdec01/myRetail
+   
 
 a) Download as a ZIP file   OR
 
 b) Clone the git project from git-bash or command prompt (You must have git setup)
 
-6. Import the project into eclipse –   File->import
+6. Import the project into your IDE
 
 
 ###### __Test the project:__
@@ -89,10 +85,50 @@ Go to the project folder and trigger the command:
 
 mvn spring-boot:run
 
-###### __Check the http Request:__
+###### TO TEst : You may use PostMan 
 
-### Secure API
-The end point of this application is fully secure. There are 3 users in this application.
-1. admin/admin   --- Can update price information and get the product by prodctId.
-2. normaluser/normaluser  --  get the product by prodctId.
-3. dbuser/dbuser  -- get the product by prodctId.
+### Available Routes
+
+1) Check whether service is up
+
+http://localhost:8080/products
+
+ `Hello World !`  
+
+2) Get product info
+
+   URL : http://localhost:8080/products/13860428
+
+   Method and path: GET /products/{id}
+
+   Response Type : JSON
+
+   Sample Request Body Format:
+
+`
+        {
+         "id": "13860428",
+         "name": "The Big Lebowski (Blu-ray)",
+         "current_price":
+            {
+               "value": "50",
+               "currency_code": "USD"
+            }
+         }
+`
+3) Update Product Info
+
+URL : http://localhost:8080/products/13860428
+
+Method and path: PUT /products/{id}
+
+Response Type : JSON
+
+Sample Request Body Format:
+
+`
+         {
+         "value": 0,
+         "message": "Product updated successfully"
+         }
+`
