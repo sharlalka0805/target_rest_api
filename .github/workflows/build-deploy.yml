@@ -30,7 +30,7 @@ jobs:
           java-version: 1.8
 
     - name: Build with Maven
-      run: mvn clean package -Dmaven.test.skip=true
+      run: mvn clean install -Dmaven.test.skip=true
 
     - name: Authorize Docker push
       run: gcloud auth configure-docker
