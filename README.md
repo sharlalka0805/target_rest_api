@@ -53,6 +53,10 @@ https://redsky-uat.perf.target.com/redsky_aggregations/v1/redsky/case_study_v1?k
 
 ## Run Via Google Cloud 
 
+The project has been deployed on GCP and it uses MongoDB ATlas cluster.
+
+Used GitHub Action workflow and Docker to implement CI/CD.
+
 https://target-rest-api-yu4izdrwlq-uc.a.run.app
 
 ## Run Locally
