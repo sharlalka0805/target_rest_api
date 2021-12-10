@@ -80,7 +80,7 @@ https://target-rest-api-yu4izdrwlq-uc.a.run.app
 
 ### Available Routes
 
-####1) Check whether service is up
+#### 1) Check whether service is up
 
 Local URL --> http://localhost:8080/products
 
@@ -88,7 +88,7 @@ Cloud URL --> https://target-rest-api-yu4izdrwlq-uc.a.run.app/products
 
  `Hello World !`  
 
-####2) Get product info
+#### 2) Get product info
 
    Local URL --> http://localhost:8080/products/13860428
 
@@ -113,7 +113,7 @@ Cloud URL --> https://target-rest-api-yu4izdrwlq-uc.a.run.app/products
          }
 `
 
-####3) Update Product Info
+#### 3) Update Product Info
 
 Local URL --> http://localhost:8080/products/13860428
 
