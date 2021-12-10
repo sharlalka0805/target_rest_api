@@ -1,4 +1,4 @@
-package com.target.casestudy.config;
+package com.target.casestudy.entity;
 
 import java.util.Map;
 

@@ -1,13 +1,12 @@
 package com.target.casestudy.repository;
 
-import com.target.casestudy.config.ProductRepositoryInterface;
+import com.target.casestudy.entity.ProductRepositoryInterface;
 import com.target.casestudy.entity.Product;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
+
 import java.util.Map;
 
 public class ProductRepositoryImpl implements ProductRepositoryInterface {

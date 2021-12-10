@@ -17,39 +17,24 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.junit4.SpringRunner;
 
-/**
- * @author Rohit Created On : 10/02/2017
- */
-/**
- * @author Rohit
- *
- */
-/**
- * @author Rohit
- *
- */
+
 @RunWith(SpringRunner.class)
 public class ProductServiceTest {
 
 	@InjectMocks
 	ProductService productService;
 
-	@Mock // -- Spring Boot
+	@Mock
 	ProductRepository productrepositoryMock;
 
-
-
-	/**
-	 * Setup for Mockito before any test run.
-	 */
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 	}
 
-
 	@Test
 	public void getProductByIdTest() throws Exception {
+
 		// Repository data from mock
 		Map<String, String> currency = new HashMap<>();
 		currency.put("value", "50");
@@ -57,9 +42,6 @@ public class ProductServiceTest {
 		Product mockProduct = new Product("13860428", currency);
 		System.out.println(productrepositoryMock);
 		Mockito.when(productrepositoryMock.getProductByproductId(Mockito.anyString())).thenReturn(mockProduct);
-
-		//Mockito.when(productInfoClient.getProductInfoById(Mockito.anyString()))
-		//		.thenReturn(new ProductInfoClientMock().getProductInfoById("13860428"));
 
 		// Actual Result
 		ProductInfo actualProduct = productService.getProductDetails("13860428");
