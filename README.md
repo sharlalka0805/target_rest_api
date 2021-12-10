@@ -67,12 +67,11 @@ https://target-rest-api-yu4izdrwlq-uc.a.run.app
 2. IDE of your choice
 3. Install Mongo DB: https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
 4. Install Maven: https://www.mkyong.com/maven/how-to-install-maven-in-windows/
-5. Github:
-   Download project from the following git repository
+5. Github: Download project from the following git repository
 
-a) Download as a ZIP file   OR
-
-b) Clone the git project from git-bash or command prompt (You must have git setup)
+       a) Download as a ZIP file   OR
+    
+       b) Clone the git project from git-bash or command prompt (You must have git setup)
 
 6. Import the project into your IDE
 7. Run mongo DB from the command prompt.  And test  ---  http://localhost:27017/
